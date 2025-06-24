@@ -1,0 +1,59 @@
+name: ecopamoja
+description: "An app designed to bring together environment enthusiasts and build a greener future."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+ 
+  cupertino_icons: ^1.0.8 # for iOS style icons
+  shared_preferences: ^2.5.3 #check whether user has completed onboarding
+  google_fonts: ^6.2.1 # for custom fonts
+  iconsax: ^0.0.8 # for icons
+  flutter_riverpod: ^2.6.1 # for state management
+  riverpod_annotation: ^2.6.1 # for code generation
+  go_router: ^15.1.3 # for routing
+  firebase_core: ^3.14.0 # for Firebase integration
+  firebase_auth: ^5.6.0 # for user authentication
+  google_sign_in: ^6.3.0 # for Google Sign-In
+  responsive_framework: ^1.5.1 # for responsive design
+  glassmorphism: ^3.0.0 # for glassmorphism effect
+  lottie: ^2.3.0 # for Lottie animations
+  flutter_secure_storage: ^9.2.4 #for storing user data
+  cloud_firestore: ^5.6.9 
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+ 
+  flutter_lints: ^5.0.0 # for linting
+  flutter_launcher_icons: ^0.14.3 # for app icons
+  riverpod_generator: ^2.6.4 # for code generation
+
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"
+  remove_alpha_ios: true
+
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/illustrations/
+
+  

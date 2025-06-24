@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>912077992479-14q7utpp6chtp13bgs92rh3qd1tl1f4v.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.912077992479-14q7utpp6chtp13bgs92rh3qd1tl1f4v</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>912077992479-juvg8u9mjg27jmd15khrf389rn9qe6bm.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCwSgiwnxYck2YhwQLe-k69mmEr0G0Jboc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>912077992479</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.ecopamoja</string>
+	<key>PROJECT_ID</key>
+	<string>ecopamoja</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ecopamoja.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:912077992479:ios:507d8419d9362231435b2a</string>
+</dict>
+</plist>
