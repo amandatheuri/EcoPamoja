@@ -1,32 +1,33 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:ecopamoja/features/authentication/controllers/auth_controller.dart';
+import 'package:ecopamoja/admin/features/auth/admin_auth_controller.dart';
 import 'package:ecopamoja/shared_components/inputs/custom_textfield.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:ecopamoja/theme_essentials/images.dart';
 import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:ecopamoja/shared_components/animations/loading_success.dart';
 
 
-class ForgotPassword extends StatefulWidget {
-  const ForgotPassword({super.key});
+class AdminForgotPassword extends StatefulWidget {
+  const AdminForgotPassword({super.key});
 
   @override
-  State<ForgotPassword> createState() => _ForgotPasswordState();
+  State<AdminForgotPassword> createState() => _ForgotPasswordState();
 }
 
-class _ForgotPasswordState extends State<ForgotPassword> {
+class _ForgotPasswordState extends State<AdminForgotPassword> {
   bool _isLoading = false;
   bool _isSuccess = false;
   final _emailController= TextEditingController();
- void _handleResetPassword() async {
+ void _handleResetPassword(WidgetRef ref) async {
   final email = _emailController.text.trim();
 
   if (email.isEmpty || !email.contains('@')) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Please enter a valid email"), backgroundColor: AppColors.primary,),
+      SnackBar(content: Text("Please enter a valid email"), backgroundColor: AppColors.primary),
     );
     return;
   }
@@ -37,31 +38,36 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   });
 
   try {
-    final loginController = AuthController();
-    await loginController.sendPasswordResetEmail(email);
-    await Future.delayed(const Duration(seconds: 2)); 
+    await ref.read(adminAuthControllerProvider).sendPasswordReset(email);
+     setState(() {
+    _isLoading = false;
+    _isSuccess = true;
+  });
+     ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password reset link sent to $email')),
+      );
+  }catch(e){
     setState(() {
-      _isLoading = false;
-      _isSuccess = true;
-    });
-  } catch (e) {
-    setState(() => _isLoading = false);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Failed to send reset email"), backgroundColor: AppColors.primary,),
-    );
+    _isLoading = false; 
+    _isSuccess = false;
+  });
+     ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to send reset email.')),
+      );
   }
 }
-
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     final isDesktop = ResponsiveBreakpoints.of(context).largerOrEqualTo(TABLET);
     return Scaffold(
-      appBar: isMobile? AppBar(
-        title: Text('Forgot Password', style: AppTextStyles.title),
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-      ) : null,
+      appBar: isMobile
+          ? AppBar(
+              title: Text('Forgot Password', style: AppTextStyles.title),
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+            )
+          : null,
       body: Center(
         child: Stack(
           children: [
@@ -85,12 +91,16 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   vertical: 16.0,
                 ),
                 child: SingleChildScrollView(
-                  child: _isLoading || _isSuccess?
-                  LoadingSuccess(
-                    isLoading: _isLoading,
-                    message: 'Check your Email for the reset link',
-                    onPressed: () => Navigator.pop(context),
-                  ):_buildResetForm(isMobile),
+                  child: _isLoading || _isSuccess
+                      ? LoadingSuccess(
+                          isLoading: _isLoading,
+                          message: 'Check your Email for the reset link',
+                          onPressed: () => Navigator.pop(context),
+                        )
+                      : Consumer(
+                          builder: (context, ref, _) =>
+                              _buildResetForm(isMobile, ref),
+                        ),
                 ),
               ),
             ),
@@ -98,8 +108,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ),
       ),
     );
-  } 
-  Widget _buildResetForm(bool isMobile) {
+  }
+
+  Widget _buildResetForm(bool isMobile, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -118,7 +129,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         Row(
           children: [
             ElevatedButton(
-              onPressed: _handleResetPassword,
+              onPressed: () => _handleResetPassword(ref),
               child: Text(
                 'Reset Password',
                 style: AppTextStyles.buttonText.copyWith(fontSize: isMobile ? 16 : 14),
