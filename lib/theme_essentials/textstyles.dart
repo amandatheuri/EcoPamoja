@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTextStyles {
   static TextStyle title = GoogleFonts.slacksideOne(
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: FontWeight.w600,
     color: AppColors.secondary,
   );

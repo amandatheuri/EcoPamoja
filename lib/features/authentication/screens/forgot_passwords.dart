@@ -88,7 +88,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   child: _isLoading || _isSuccess?
                   LoadingSuccess(
                     isLoading: _isLoading,
-                    message: 'Check your Email for the reset link',
+                    message: 'Check your Email(If not in your inbox check your spam) for the reset link',
                     onPressed: () => Navigator.pop(context),
                   ):_buildResetForm(isMobile),
                 ),
