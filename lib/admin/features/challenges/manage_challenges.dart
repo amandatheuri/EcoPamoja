@@ -1,8 +1,16 @@
-// ignore_for_file: deprecated_member_use
-
-import 'package:ecopamoja/admin/features/dashboard/challenges/action_challenge_form.dart';
-import 'package:ecopamoja/admin/features/dashboard/challenges/quiz_challenge_form.dart';
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+/* 
+Step 1: Create stateful widget for managing challenges
+Step 2: initialize a scroll controller to handle horizontal scrolling and set show arrow to false
+Step 3: create a function to check if the scroll view is overflowing
+Step 4: create a toggle button to switch between quiz and action challenges
+Step 5: create a button to add new challenges
+*/
+import 'package:ecopamoja/admin/features/challenges/forms/action_challenge_form.dart';
+import 'package:ecopamoja/admin/features/challenges/forms/quiz_challenge_form.dart';
+import 'package:ecopamoja/admin/features/challenges/forms/sponsored_action.dart';
 import 'package:ecopamoja/admin/features/widgets/action_challenge.dart';
+import 'package:ecopamoja/admin/features/widgets/action_challenge_type.dart';
 import 'package:ecopamoja/admin/features/widgets/quiz_challenge.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +25,7 @@ class ManageChallengesScreen extends StatefulWidget {
 
 class _ManageChallengesScreenState extends State<ManageChallengesScreen> {
   final ScrollController _scrollController = ScrollController();
-bool _showScrollArrow = false;
+  bool _showScrollArrow = false;
 
   int _selectedTab = 0;
 @override
@@ -46,11 +54,9 @@ void _checkScrollOverflow() {
     });
   }
 }
-
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
-
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
@@ -67,7 +73,7 @@ void _checkScrollOverflow() {
         children: [
           _buildToggleButtons(isMobile),
           const SizedBox(width: 16),
-          _buildAddButton()
+          _buildAddButton(context, _selectedTab)
         ],
       ),
     ),
@@ -107,7 +113,7 @@ void _checkScrollOverflow() {
                       const SizedBox(height: 16),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: _buildAddButton(),
+                        child: _buildAddButton(context, _selectedTab),
                       ),
                     ],
                   ),
@@ -116,7 +122,7 @@ void _checkScrollOverflow() {
             Expanded(
               child: _selectedTab == 0
                   ? QuizChallengeManager()
-                  : ActionChallengeManager(),
+                  : ActionChallengesPage(),
             ),
           ],
         ),
@@ -153,25 +159,46 @@ void _checkScrollOverflow() {
     );
   }
 
-  Widget _buildAddButton() {
+ Widget _buildAddButton(BuildContext context, int selectedTab) {
   return ElevatedButton(
-    onPressed: () {
-      showDialog(
-        context: context,
-        barrierDismissible: true, // allows closing the dialog when tapping outside
-        builder: (_) {
-          return AlertDialog(
-            contentPadding: const EdgeInsets.all(20),
-            content: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.6, // Responsive width
-              child: _selectedTab == 0
-                  ? AddQuizChallengeDialog()
-                  : AddActionChallengeDialog(),
-            ),
-          );
-        },
+    onPressed: () async {
+  final selectedType = await showDialog<String>(
+    context: context,
+    builder: (context) => ActionChallengeType(), 
+  );
+
+  if (selectedType == null) return;
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      Widget content;
+      switch (selectedType) {
+        case 'normal':
+          content = const AddActionChallengeDialog(); 
+          break;
+        case 'sponsored':
+        content = SponsoredActionChallenge(); 
+        break;
+        default:          
+          content = const AddQuizChallengeDialog(); 
+
+      }
+
+      return AlertDialog(
+        contentPadding: const EdgeInsets.all(14),
+        content: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height*0.7,
+            maxWidth: MediaQuery.of(context).size.width*0.6,
+          ),
+          child:content
+          ),
       );
     },
+  );
+},
+
     style: ElevatedButton.styleFrom(
       shape: const CircleBorder(
         side: BorderSide(color: AppColors.primary, width: 2),
@@ -182,5 +209,6 @@ void _checkScrollOverflow() {
     child: const Icon(Icons.add, color: Colors.white),
   );
 }
+
 
 }

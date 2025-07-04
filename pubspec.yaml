@@ -23,13 +23,15 @@ dependencies:
   firebase_auth: ^5.6.0 # for user authentication
   google_sign_in: ^6.3.0 # for Google Sign-In
   responsive_framework: ^1.5.1 # for responsive design
-  glassmorphism: ^3.0.0 # for glassmorphism effect
-  lottie: ^2.3.0 # for Lottie animations
+  lottie: ^3.3.1 # for Lottie animations
   flutter_secure_storage: ^9.2.4 #for storing user data
-  cloud_firestore: ^5.6.9 
-
-
-
+  cloud_firestore: ^5.6.9 # for Firestore database
+  intl: ^0.20.2 # for internationalization
+  firebase_storage: ^12.4.8 # for storing images in Firebase
+  file_picker: ^10.2.0 # for picking files
+  http: ^1.4.0
+  url_launcher: ^6.3.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

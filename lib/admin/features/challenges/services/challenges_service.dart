@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecopamoja/admin/features/dashboard/challenges/challenges_model.dart';
+import 'package:ecopamoja/admin/features/challenges/models/challenges_model.dart';
 
 class ChallengeService {
   static final _challengesRef = FirebaseFirestore.instance.collection('challenges');
 
   static Stream<List<ChallengeModel>> getAllChallenges() {
     return _challengesRef
-        .orderBy('date', descending: true)
+        .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => ChallengeModel.fromFirestore(doc)).toList());

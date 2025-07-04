@@ -13,11 +13,12 @@ Step 6: Build drawer for mobile view(a widget function that returns sidebar)✅
 Step 7: Handle the list items when clicked(initialize the selected index to point to the page that has been clicked,
 return listtile(selected, title, ontap(setstate({the selected index will now point to the selected item and if on mobile pop context}))))✅
 */
+import 'dart:math';
+
 import 'package:ecopamoja/admin/features/dashboard/admin_dashboard_content.dart';
 import 'package:ecopamoja/admin/features/dashboard/analytics.dart';
-import 'package:ecopamoja/admin/features/dashboard/challenges/manage_challenges.dart';
+import 'package:ecopamoja/admin/features/challenges/manage_challenges.dart';
 import 'package:ecopamoja/admin/features/dashboard/manage_store_items.dart';
-import 'package:ecopamoja/platform_check_stub.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:ecopamoja/theme_essentials/images.dart';
 import 'package:ecopamoja/theme_essentials/textstyles.dart';
@@ -74,8 +75,9 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
   Widget _buildSidebar(){
     return Container(
       height: double.infinity,
-      width: !isMobile? (MediaQuery.of(context).size.width * 0.25 > 250
-    ? 250 : MediaQuery.of(context).size.width * 0.25): null,
+      width: MediaQuery.of(context).size.width < 450 
+  ? MediaQuery.of(context).size.width * 0.70 
+  : min(MediaQuery.of(context).size.width * 0.25, 250),
       color: AppColors.background,
       child: Column(
       children: [
@@ -83,7 +85,7 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
         child: ListView(
           children: [
            Padding(
-             padding: const EdgeInsets.only(top: 1.0),
+             padding: const EdgeInsets.only(top: 20.0),
              child: Image.asset(AppImages.logosticker, width: 80, height: 80),
            ),
             const SizedBox(height: 10),
