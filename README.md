@@ -1,16 +1,85 @@
-# ecopamoja
+Eco Pamoja
+A gamified platform for everyday eco-action.
 
-A new Flutter project.
 
-## Getting Started
+Overview
+Eco Pamoja is a mobile and web application built with Flutter and Firebase that makes living sustainably fun and rewarding.
+Users complete daily eco-friendly challenges, earn trophies, keep a mascot happy by maintaining streaks, and can track their environmental impact.
 
-This project is a starting point for a Flutter application.
+Features
+Daily Challenges
 
-A few resources to get you started if this is your first Flutter project:
+Categories: Learn & Discover, Waste & Recycling, Nature & Outdoors, Energy & Water, Community & Advocacy.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Gamification
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Earn a trophy for every 21 challenges completed.
+
+Unlock the Eco Warrior badge after earning 10 trophies.
+
+Keep the mascot happy by staying active and maintaining your streak.
+
+Impact Tracking
+
+See your stats: challenges completed, streaks, categories engaged in, and potential environmental impact.
+
+Future Vision (Phase 2)
+
+Explore eco-friendly products from partner brands in the in-app store.
+
+Tech Stack
+Frontend: Flutter
+
+Backend & Database: Firebase (Firestore, Authentication, Storage)
+
+State Management: Riverpod
+
+Hosting: Firebase Hosting (for web version)
+
+Project Structure
+EcoPamoja/
+│── assets/            # Images, mascot states, icons
+│── lib/
+│   ├── features/       # Feature-based architecture
+│   ├── models/         # Data models
+│   ├── services/       # Firebase services
+│   ├── widgets/        # Reusable UI components
+│── pubspec.yaml        # Dependencies
+│── README.md           # Project documentation
+Getting Started
+Prerequisites
+Flutter SDK installed
+
+Firebase project set up with Authentication, Firestore, and Storage enabled
+
+Installation
+# Clone the repository
+git clone https://github.com/amandatheuri/EcoPamoja.git
+
+# Navigate into the project directory
+cd ecopamoja
+
+# Install dependencies
+flutter pub get
+
+# Run the app
+flutter run
+Contributing
+We welcome contributions.
+
+Fork the repository
+
+Create a new branch (feature/new-feature)
+
+Commit changes
+
+Push and create a pull request
+
+License
+This project is licensed under the MIT License.
+
+Contact
+For questions, collaborations, or partnerships:
+Email: ecopamoja@gmail.com
+
+
