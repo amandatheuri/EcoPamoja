@@ -36,16 +36,6 @@ State Management: Riverpod
 
 Hosting: Firebase Hosting (for web version)
 
-Project Structure
-EcoPamoja/
-│── assets/            # Images, mascot states, icons
-│── lib/
-│   ├── features/       # Feature-based architecture
-│   ├── models/         # Data models
-│   ├── services/       # Firebase services
-│   ├── widgets/        # Reusable UI components
-│── pubspec.yaml        # Dependencies
-│── README.md           # Project documentation
 Getting Started
 Prerequisites
 Flutter SDK installed
