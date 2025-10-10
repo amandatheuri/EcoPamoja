@@ -1,31 +1,5 @@
-Eco Pamoja
-A gamified platform for everyday eco-action.
-
-
-Overview
-Eco Pamoja is a mobile and web application built with Flutter and Firebase that makes living sustainably fun and rewarding.
-Users complete daily eco-friendly challenges, earn trophies, keep a mascot happy by maintaining streaks, and can track their environmental impact.
-
-Features
-Daily Challenges
-
-Categories: Learn & Discover, Waste & Recycling, Nature & Outdoors, Energy & Water, Community & Advocacy.
-
-Gamification
-
-Earn a trophy for every 21 challenges completed.
-
-Unlock the Eco Warrior badge after earning 10 trophies.
-
-Keep the mascot happy by staying active and maintaining your streak.
-
-Impact Tracking
-
-See your stats: challenges completed, streaks, categories engaged in, and potential environmental impact.
-
-Future Vision (Phase 2)
-
-Explore eco-friendly products from partner brands in the in-app store.
+Eco Pamoja is a mobile and web application built with Flutter and Firebase that makes sustainable living fun, social, and rewarding.
+Users take on daily eco-friendly challenges, earn trophies, maintain streaks to keep their mascot happy, join community groups, and track their overall environmental impact.
 
 Tech Stack
 Frontend: Flutter
@@ -33,8 +7,6 @@ Frontend: Flutter
 Backend & Database: Firebase (Firestore, Authentication, Storage)
 
 State Management: Riverpod
-
-Hosting: Firebase Hosting (for web version)
 
 Getting Started
 Prerequisites
@@ -53,7 +25,8 @@ cd ecopamoja
 flutter pub get
 
 # Run the app
-flutter run
+flutter run main.dart/admin.dart
+
 Contributing
 We welcome contributions.
 
