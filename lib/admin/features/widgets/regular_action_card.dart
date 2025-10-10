@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecopamoja/admin/features/challenges/models/challenges_model.dart';
 import 'package:ecopamoja/admin/features/challenges/services/challenges_service.dart';
 import 'package:ecopamoja/admin/features/widgets/editaction.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class RegularActionChallengeCard extends StatelessWidget {
@@ -64,7 +63,7 @@ class RegularActionChallengeCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Text(challenge.title, style: AppTextStyles.subHeading),
+            Text(challenge.title, style: Theme.of(context).textTheme.bodyLarge),
             const SizedBox(height: 4),
             Text(challenge.description, maxLines: 2, overflow: TextOverflow.ellipsis),
             const Spacer(),

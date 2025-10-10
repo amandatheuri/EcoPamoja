@@ -4,7 +4,6 @@ import 'package:ecopamoja/admin/features/auth/admin_auth_controller.dart';
 import 'package:ecopamoja/shared_components/inputs/custom_textfield.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:ecopamoja/theme_essentials/images.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -63,7 +62,7 @@ class _ForgotPasswordState extends State<AdminForgotPassword> {
     return Scaffold(
       appBar: isMobile
           ? AppBar(
-              title: Text('Forgot Password', style: AppTextStyles.title),
+              title: Text('Forgot Password', style: Theme.of(context).textTheme.bodyLarge),
               backgroundColor: Colors.transparent,
               centerTitle: true,
             )
@@ -116,7 +115,7 @@ class _ForgotPasswordState extends State<AdminForgotPassword> {
       children: [
         Text(
           'Enter your email to reset password',
-          style: AppTextStyles.subHeading.copyWith(fontSize: 16),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 16),
         ),
         const SizedBox(height: 20.0),
         AppTextfield(
@@ -132,7 +131,7 @@ class _ForgotPasswordState extends State<AdminForgotPassword> {
               onPressed: () => _handleResetPassword(ref),
               child: Text(
                 'Reset Password',
-                style: AppTextStyles.buttonText.copyWith(fontSize: isMobile ? 16 : 14),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: isMobile ? 16 : 14),
               ),
             ),
             const SizedBox(width: 15.0),
@@ -143,7 +142,7 @@ class _ForgotPasswordState extends State<AdminForgotPassword> {
                 },
                 child: Text(
                   'Back to login',
-                  style: AppTextStyles.buttonText.copyWith(fontSize: isMobile ? 16 : 14),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: isMobile ? 16 : 14),
                 ),
               ),
           ],

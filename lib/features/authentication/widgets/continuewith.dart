@@ -3,7 +3,6 @@
 import 'package:ecopamoja/features/authentication/controllers/auth_controller.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:ecopamoja/theme_essentials/images.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +15,7 @@ class ContinueWith extends ConsumerWidget {
     if (user != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Signed in as ${user.displayName}', style: AppTextStyles.bodyText),
+          content: Text('Signed in as ${user.displayName}', style: Theme.of(context).textTheme.bodySmall),
           backgroundColor: AppColors.primary,
         ),
       );
@@ -26,7 +25,7 @@ class ContinueWith extends ConsumerWidget {
         SnackBar(
           content: Text(
             'Google Sign-In failed',
-            style: AppTextStyles.bodyText,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           backgroundColor: AppColors.primary,
         ),

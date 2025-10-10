@@ -3,8 +3,6 @@
 import 'package:ecopamoja/admin/features/auth/admin_auth_controller.dart';
 import 'package:ecopamoja/admin/features/auth/admin_forgot_password.dart';
 import 'package:ecopamoja/shared_components/inputs/custom_textfield.dart';
-import 'package:ecopamoja/theme_essentials/colors.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -89,7 +87,7 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginForm>{
                 },
                 child: Text(
                   "Forgot Password?",
-                  style: AppTextStyles.buttonText.copyWith(color: AppColors.primary,fontSize: 14),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
               const SizedBox(height: 18),
@@ -97,7 +95,7 @@ class _AdminLoginScreenState extends ConsumerState<AdminLoginForm>{
           width: double.infinity,
           height: 45,
           child: ElevatedButton(onPressed: _adminIsLoading? null: _adminLogin, 
-          child: _adminIsLoading? CircularProgressIndicator(): Text('Login', style: AppTextStyles.buttonText,)),
+          child: _adminIsLoading? CircularProgressIndicator(): Text('Login', style: Theme.of(context).textTheme.bodySmall)),
         )
     ],
   ));

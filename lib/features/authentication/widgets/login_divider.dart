@@ -1,5 +1,4 @@
 import 'package:ecopamoja/theme_essentials/colors.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class LoginDivider extends StatelessWidget {
@@ -20,10 +19,7 @@ class LoginDivider extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
             'OR login with',
-            style: AppTextStyles.bodyText.copyWith(
-              fontSize: 14.0,
-              color: AppColors.secondary,
-            ),
+            style: Theme.of(context).textTheme.labelSmall
           ),
         ),
         Expanded(

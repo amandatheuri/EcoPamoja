@@ -1,6 +1,5 @@
 import 'package:ecopamoja/admin/features/widgets/admin_login_form.dart';
 import 'package:ecopamoja/theme_essentials/images.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -20,7 +19,7 @@ class AdminLoginScreen extends StatelessWidget {
           children: [
             if(adminIsDesktop)
               Positioned.fill(
-                child: Image.asset(AppImages.background, fit: BoxFit.cover)),
+                child: Image.asset(AppImages.background3, fit: BoxFit.cover)),
                 Center(
                   child: Container(
                       constraints: BoxConstraints(
@@ -49,7 +48,7 @@ class AdminLoginScreen extends StatelessWidget {
         Image.asset(AppImages.logo,width: 80,height: 80),
         const SizedBox(height: 18.0),
         Text( 'Welcome back admin!',
-      style: AppTextStyles.bodyText.copyWith(
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
         fontSize:16,
         color: Colors.white,
         fontWeight: FontWeight.bold,
@@ -68,7 +67,7 @@ class AdminLoginScreen extends StatelessWidget {
               Image.asset(AppImages.logo,width: 80,height: 80),
               const SizedBox(height: 18.0),
               Text( 'Welcome back admin!',
-      style: AppTextStyles.bodyText.copyWith(
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
         fontSize:14,
         color: Colors.white,
         fontWeight: FontWeight.bold,

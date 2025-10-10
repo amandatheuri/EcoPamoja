@@ -4,7 +4,6 @@ import 'package:ecopamoja/admin/features/challenges/models/challenges_model.dart
 import 'package:ecopamoja/admin/features/challenges/services/challenges_service.dart';
 import 'package:ecopamoja/admin/features/widgets/quizEditDialog.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class QuizChallengeManager extends StatelessWidget {
@@ -63,7 +62,6 @@ class QuizChallengeManager extends StatelessWidget {
                 children: [
                   Text(
                     challenge.title,
-                    style: AppTextStyles.bodyText,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

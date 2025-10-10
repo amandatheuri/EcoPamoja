@@ -4,7 +4,6 @@ import 'package:ecopamoja/features/authentication/controllers/auth_controller.da
 import 'package:ecopamoja/shared_components/inputs/custom_textfield.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:ecopamoja/theme_essentials/images.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:ecopamoja/shared_components/animations/loading_success.dart';
@@ -58,7 +57,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     final isDesktop = ResponsiveBreakpoints.of(context).largerOrEqualTo(TABLET);
     return Scaffold(
       appBar: isMobile? AppBar(
-        title: Text('Forgot Password', style: AppTextStyles.title),
+        title: Text('Forgot Password'),
         backgroundColor: Colors.transparent,
         centerTitle: true,
       ) : null,
@@ -105,7 +104,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       children: [
         Text(
           'Enter your email to reset password',
-          style: AppTextStyles.subHeading.copyWith(fontSize: 16),
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: 20.0),
         AppTextfield(
@@ -121,7 +120,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               onPressed: _handleResetPassword,
               child: Text(
                 'Reset Password',
-                style: AppTextStyles.buttonText.copyWith(fontSize: isMobile ? 16 : 14),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
             const SizedBox(width: 15.0),
@@ -132,7 +131,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 },
                 child: Text(
                   'Back to login',
-                  style: AppTextStyles.buttonText.copyWith(fontSize: isMobile ? 16 : 14),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ),
           ],

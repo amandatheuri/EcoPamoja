@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -64,7 +63,7 @@ class _AddQuizChallengeDialogState extends State<AddQuizChallengeDialog> {
               children: [
                 Text(
                   'Add Quiz Challenge',
-                  style: AppTextStyles.title.copyWith(fontSize: 20),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 20),
                 ),
                 const SizedBox(height: 16),
                 Form(

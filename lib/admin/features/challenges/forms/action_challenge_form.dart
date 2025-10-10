@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -130,7 +129,7 @@ class _AddActionChallengeDialogState extends State<AddActionChallengeDialog> {
               children: [
                 Text(
                   'Add Action Challenge',
-                  style: AppTextStyles.title.copyWith(fontSize: 20),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 20),
                 ),
                 const SizedBox(height: 16),
                 Form(

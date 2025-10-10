@@ -4,7 +4,6 @@ import 'package:ecopamoja/admin/features/challenges/services/challenges_service.
 import 'package:ecopamoja/admin/features/challenges/services/sponsored_services_challenges.dart';
 import 'package:ecopamoja/admin/features/widgets/regular_action_card.dart';
 import 'package:ecopamoja/admin/features/widgets/sponsored_action_card.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class ActionChallengesPage extends StatelessWidget {
@@ -34,7 +33,7 @@ class ActionChallengesPage extends StatelessWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('Sponsored Challenges',  style: AppTextStyles.bodyText.copyWith(fontWeight: FontWeight.bold)),
+                        Text('Sponsored Challenges',  style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
                         const SizedBox(height: 8),
                         LayoutBuilder(
                           builder: (context, constraints) {
@@ -84,7 +83,7 @@ class ActionChallengesPage extends StatelessWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('Regular Action Challenges', style: AppTextStyles.bodyText.copyWith(fontWeight: FontWeight.bold)),
+                        Text('Regular Action Challenges', style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
                         const SizedBox(height: 8),
                         LayoutBuilder(
                           builder: (context, constraints) {

@@ -23,7 +23,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
   Timer? _debounce;
   String? _usernameStatus;
   bool _checkingUsername = false;
-    bool _obscurePassword= true;
+    bool _showPassword= false;
 
 
 
@@ -143,7 +143,7 @@ void _onUsernameChanged() {
           fontSize: 12,
         ),
       ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
               AppTextfield(
                 label: 'Email', 
                 icon: Icons.mail, 
@@ -153,22 +153,22 @@ void _onUsernameChanged() {
                     ? 'Enter a valid email'
                     : null, 
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
               AppTextfield(
                  label: 'Password', 
           icon: Icons.lock, 
           hintText: 'Enter Password', 
           controller: _passwordController,
           isPassword: true,
-          isVisible: _obscurePassword,
+          isVisible: _showPassword,
           toogleVisibility: () {
           setState(() {
-           _obscurePassword = !_obscurePassword;
+           _showPassword = !_showPassword;
           });
             },
           validator: (val) => val == null || val.length < 6 ? 'Password too short' : null,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               SizedBox(
                 height: 45,
                 width: double.infinity,
@@ -178,7 +178,7 @@ void _onUsernameChanged() {
                       : _signup,
                   child: isLoading
                       ? const CircularProgressIndicator()
-                      : const Text("Sign Up"),
+                      : Text("Sign Up", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 ),
               ),
 

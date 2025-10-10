@@ -10,7 +10,9 @@ Widget build (BuildContext context){
   return MaterialApp.router(
     routerConfig: adminRouter,
     debugShowCheckedModeBanner: false,
-    theme: AdminTheme.darkTheme,
+    theme: AppTheme.lightTheme,
+    darkTheme: AppTheme.darkTheme,
+    themeMode: ThemeMode.system,
     builder: (context, child) => ResponsiveBreakpoints.builder(
       child: child!, 
       breakpoints: [

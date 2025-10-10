@@ -42,25 +42,24 @@ class AppTextfield extends StatelessWidget {
       textInputAction: TextInputAction.next,
       inputFormatters: inputFormatters,
       autofillHints: autofillHint != null ? [autofillHint!] : null,
-      style: TextStyle(color: AppColors.secondary),
+      style: Theme.of(context).textTheme.bodySmall,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 12.0),
         labelText: label,
-        labelStyle: TextStyle(color: Colors.white54, fontSize: 14),
+        labelStyle: TextStyle(color: AppColors.grey, fontSize: 14),
         floatingLabelStyle: TextStyle(color: AppColors.primary),
         hintText: hintText,
         hintStyle: TextStyle(color: const Color.fromARGB(255, 139, 138, 138)),
-        prefixIcon: Icon(icon, color: AppColors.secondary),
+        prefixIcon: Icon(icon),
         suffixIcon: isPassword
             ? IconButton(
                 icon: Icon(
                   isVisible ? Iconsax.eye : Iconsax.eye_slash,
-                  color: AppColors.secondary,
                 ),
                 onPressed: toogleVisibility,
               )
             : null,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
         errorStyle: TextStyle(color: Theme.of(context).colorScheme.error),
         errorBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Theme.of(context).colorScheme.error),

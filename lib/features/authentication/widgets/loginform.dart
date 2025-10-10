@@ -4,7 +4,6 @@ import 'package:ecopamoja/features/authentication/controllers/auth_controller.da
 import 'package:ecopamoja/features/authentication/screens/forgot_passwords.dart';
 import 'package:ecopamoja/shared_components/inputs/custom_textfield.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -22,8 +21,7 @@ class _LoginFormState extends ConsumerState<LoginForm>{
 
   bool isLoading = false;
   bool _rememberMe = false;
-  bool _obscurePassword= true;
-
+  bool _showPassword= false;
   @override
   void initState() {
     super.initState();
@@ -56,7 +54,7 @@ class _LoginFormState extends ConsumerState<LoginForm>{
      showDialog(
      context: context,
      builder: (context) => AlertDialog(
-     content: Text('Login Successful', style: AppTextStyles.bodyText),
+     content: Text('Login Successful', style: Theme.of(context).textTheme.bodySmall),
      backgroundColor: AppColors.primary,
      ),
       );
@@ -66,7 +64,7 @@ class _LoginFormState extends ConsumerState<LoginForm>{
         });
       }else{
       showDialog(context: context, builder: (context)=> AlertDialog(
-        content: Text('Login failed! Check password and email', style: AppTextStyles.bodyText),
+        content: Text('Login failed! Check password and email', style: Theme.of(context).textTheme.bodySmall),
         backgroundColor: const Color.fromARGB(55, 28, 193, 58),
       ));
       }
@@ -90,10 +88,10 @@ class _LoginFormState extends ConsumerState<LoginForm>{
           hintText: 'Enter Password', 
           controller: _passwordController,
           isPassword: true,
-          isVisible: _obscurePassword,
+          isVisible: _showPassword,
           toogleVisibility: () {
           setState(() {
-           _obscurePassword = !_obscurePassword;
+           _showPassword=!_showPassword;
           });
             },
           validator: (val) => val == null || val.length < 6 ? 'Password too short' : null,
@@ -105,7 +103,7 @@ class _LoginFormState extends ConsumerState<LoginForm>{
                 value: _rememberMe,
                 onChanged: (val) => setState(() => _rememberMe = val!),
               ),
-              Text("Remember me", style: AppTextStyles.bodyText),
+              Text("Remember me", style: Theme.of(context).textTheme.labelSmall),
               const Spacer(),
               TextButton(
                 onPressed: () {
@@ -116,7 +114,7 @@ class _LoginFormState extends ConsumerState<LoginForm>{
                 },
                 child: Text(
                   "Forgot Password?",
-                  style: AppTextStyles.buttonText.copyWith(color: AppColors.primary,fontSize: 14),
+                  style: Theme.of(context).textTheme.labelSmall,
                 ),
               )
             ],
@@ -126,10 +124,9 @@ class _LoginFormState extends ConsumerState<LoginForm>{
           height: 45,
           child: ElevatedButton(
           onPressed: isLoading? null: _login, 
-          child: isLoading? CircularProgressIndicator(): Text('Login', style: AppTextStyles.buttonText,)),
+          child: isLoading? CircularProgressIndicator(): Text('Login')),
         )
       ],
     ));
   }
   }
-

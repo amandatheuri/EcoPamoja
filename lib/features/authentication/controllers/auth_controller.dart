@@ -24,6 +24,37 @@ Future<User?> signInWithGoogle()async{
     idToken: googleAuth.idToken
   );
   final userCredential= await  _auth.signInWithCredential(credential);
+  final user = userCredential.user;
+
+if (user != null) {
+  final userDoc = await _firestore.collection('users').doc(user.uid).get();
+
+  if (!userDoc.exists) {
+    await _firestore.collection('users').doc(user.uid).set({
+      'email': user.email,
+      'username': user.displayName ?? 'Anonymous',
+      'photoUrl': user.photoURL,
+      'createdAt': FieldValue.serverTimestamp(),
+      'lastActive': FieldValue.serverTimestamp(),
+      'streak': 0,
+      'isAdmin': false,
+      'medalCount': 0,
+      'trophiesEarned': 0,
+      'ecoWarrior': false,
+      'quizzesCompleted': 0,
+      'actionsCompleted': 0,
+      'totalChallengesCompleted': 0,
+      'dailyGoal': 3,
+      'todayChallengesCompleted': 0,
+      'completedChallenges': [],
+      'notificationsEnabled': true,
+      'preferredCategories': [],
+      'themeMode': 'dark',
+      'hasSeenIntro': false,
+    });
+  }
+}
+
   print('🟡 userCredential: ${userCredential.user}');
   return userCredential.user;
  }catch(e){
@@ -33,20 +64,40 @@ Future<User?> signInWithGoogle()async{
 }
 
   //logic for login
-  Future<UserCredential?>loginWithEmail({
-    required String email,
-    required String password,
-  })async{
-    try{
-      // ignore: non_constant_identifier_names
-      final userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return userCredential;
-    }on FirebaseAuthException catch (e){
-      print('Login error ${e.message}');
-      return null;
+  Future<UserCredential?> loginWithEmail({
+  required String email,
+  required String password,
+}) async {
+  try {
+    // First: check if this email exists in admin list
+    final checkAdmin = await _firestore.collection('admin_users').doc(email).get();
+
+    if (checkAdmin.exists) {
+      // This is an admin account block login on user side
+      throw FirebaseAuthException(
+        code: 'admin-account',
+        message: 'This email is registered as an admin. Please use the admin app.',
+      );
     }
+
+    // Not an admin allow sign in
+    final userCredential = await _auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    
+    return userCredential;
+
+  } on FirebaseAuthException catch (e) {
+    print('❌ FirebaseAuth error: ${e.message}');
+    return null;
+  } catch (e) {
+    print('❌ Unknown error: $e');
+    return null;
   }
-  //logic for sign up
+}
+
+  //logic for username
  Future<bool> checkUsernameExists(String username) async {
   final result = await _firestore
       .collection('users')
@@ -68,11 +119,29 @@ Future<User?> registerWithEmail({
     );
 
     // Save user to Firestore
-    await _firestore.collection('users').doc(userCredential.user!.uid).set({
-      'email': email,
-      'username': username,
-      'createdAt': FieldValue.serverTimestamp(),
-    });
+   await _firestore.collection('users').doc(userCredential.user!.uid).set({
+  'email': email,
+  'username': username,
+  'photoUrl': null,
+  'createdAt': FieldValue.serverTimestamp(),
+  'lastActive': FieldValue.serverTimestamp(),
+  'streak': 0,
+  'isAdmin': false,
+  'medalCount': 0,
+  'trophiesEarned': 0,
+  'ecoWarrior': false,
+  'quizzesCompleted': 0,
+  'actionsCompleted': 0,
+  'totalChallengesCompleted': 0,
+  'dailyGoal': 3,
+  'todayChallengesCompleted': 0,
+  'completedChallenges': [],
+  'notificationsEnabled': true,
+  'preferredCategories': [],
+  'themeMode': 'dark',
+  'hasSeenIntro': false,
+});
+
 
     return userCredential.user;
   } catch (e) {

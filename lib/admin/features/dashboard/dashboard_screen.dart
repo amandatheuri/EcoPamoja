@@ -19,9 +19,10 @@ import 'package:ecopamoja/admin/features/dashboard/admin_dashboard_content.dart'
 import 'package:ecopamoja/admin/features/dashboard/analytics.dart';
 import 'package:ecopamoja/admin/features/challenges/manage_challenges.dart';
 import 'package:ecopamoja/admin/features/dashboard/manage_store_items.dart';
+import 'package:ecopamoja/admin/features/dashboard/mascot_form.dart';
+import 'package:ecopamoja/admin/features/didyouknow/did_you_know_content.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:ecopamoja/theme_essentials/images.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -41,6 +42,8 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
     'Manage Store Items',
     'Manage Challenges',
     'Analytics',
+    'Mascot',
+    'Did you know'
   ];
   @override
   Widget build(BuildContext context) {
@@ -49,7 +52,7 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
       appBar:AppBar(
         title: Padding(
           padding: !isMobile? EdgeInsets.only(left: 250.0): EdgeInsets.only(left: 0.0),
-          child: Text(_title[_selectedIndex], style: AppTextStyles.title),
+          child: Text(_title[_selectedIndex], style: Theme.of(context).textTheme.bodyLarge),
         ),
         centerTitle: true,
       ),
@@ -63,13 +66,11 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
                       ManageStoreItems(),
                       ManageChallengesScreen(),
                       AdminAnalytics(),
+                      AdminMascotPage(),
+                      DidYouKnowScreen()
                     ],))
                   ],
-                ),
-        
-      
-      
-        
+                ),        
     );
   }
   Widget _buildSidebar(){
@@ -91,7 +92,7 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
             const SizedBox(height: 10),
             Text(
               'EcoPamoja Admin',
-              style: AppTextStyles.title.copyWith(fontSize: 22),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 22),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 40),
@@ -99,6 +100,8 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
             _buildNavItem('Manage Store Items', 1, Icons.store),
             _buildNavItem('Manage Challenges', 2, Icons.task),
             _buildNavItem('Analytics', 3, Icons.analytics),
+            _buildNavItem('Mascot', 4, Icons.pets),
+            _buildNavItem('Did you know', 5, Icons.question_answer)
           ],
         ),
       ),
@@ -109,7 +112,7 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
           leading: Icon(Icons.logout),
           title: Text(
             'Logout',
-            style: AppTextStyles.bodyText.copyWith(color: AppColors.secondary, fontSize: 16),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 16),
           ),
           onTap: () async{
             await FirebaseAuth.instance.signOut();
@@ -134,11 +137,11 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
   softWrap: false,
   maxLines: 1,
   style: isSelected
-      ? AppTextStyles.bodyText.copyWith(
+      ? Theme.of(context).textTheme.bodySmall?.copyWith(
           color: AppColors.primary,
           fontSize: 16, 
         )
-      : AppTextStyles.bodyText.copyWith(
+      : Theme.of(context).textTheme.bodySmall?.copyWith(
           fontSize: 16,
         ),
 ),

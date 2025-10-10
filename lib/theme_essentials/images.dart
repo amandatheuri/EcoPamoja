@@ -9,5 +9,8 @@ class AppImages{
   static const String background2 = 'assets/images/background2.png';
   static const String logosticker = 'assets/icons/logo.png';
   static const String background3 = 'assets/images/background3.png';
-
+  static const String happyEarth = 'assets/images/earth group.png';
+  static const String boredEarth = 'assets/images/bored earth.png';
+  static const String sadEarth = 'assets/images/Sad earth.png';
+  static const String dehydratedEarth = 'assets/images/dehydrated.png';
 }

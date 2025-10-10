@@ -3,7 +3,6 @@
 import 'package:ecopamoja/features/authentication/controllers/auth_controller.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:ecopamoja/theme_essentials/images.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -15,10 +14,10 @@ class SignUpWith extends ConsumerWidget {
     Future<void> handleSignIn(BuildContext context)async{
       final user = await ref.read(authControllerProvider).signInWithGoogle();
       if (user != null){
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Sign in as ${user.displayName}', style: AppTextStyles.bodyText),backgroundColor: AppColors.primary,));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Sign in as ${user.displayName}', style: Theme.of(context).textTheme.bodySmall),backgroundColor: AppColors.primary,));
         context.go('/home');
       }else{
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Google sign in failed', style:  AppTextStyles.bodyText),backgroundColor: AppColors.primary,));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Google sign in failed', style: Theme.of(context).textTheme.bodySmall),backgroundColor: AppColors.primary,));
       }
     }
     return Center(

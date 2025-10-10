@@ -8,22 +8,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() async {
+void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   final prefs = await SharedPreferences.getInstance();
   final isOnboardingComplete = prefs.getBool('onboarding_completed') ?? false;
   final isLoggedIn = FirebaseAuth.instance.currentUser != null;
   final isMobilePlatform = !kIsWeb && isMobile;
+  final showOnboardingForTesting = false; 
+  final shouldShowOnboarding =
+      // ignore: dead_code
+      showOnboardingForTesting ? true : (isMobilePlatform && !isOnboardingComplete);
 
   runApp(
     ProviderScope(
       child: MainApp(
-        showOnboarding: isMobilePlatform && !isOnboardingComplete,
+        showOnboarding: shouldShowOnboarding,
         isLoggedIn: isLoggedIn,
       ),
     ),
   );
 }
+

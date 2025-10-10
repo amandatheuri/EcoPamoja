@@ -1,7 +1,6 @@
 import 'package:ecopamoja/admin/features/challenges/models/sponsored_challenges.dart';
 import 'package:ecopamoja/admin/features/challenges/services/sponsored_services_challenges.dart';
 import 'package:ecopamoja/admin/features/widgets/edit_sponsored_action.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class SponsoredChallengeCard extends StatelessWidget {
@@ -74,13 +73,13 @@ class SponsoredChallengeCard extends StatelessWidget {
         width: 40,
         height: 40,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => const Icon(Icons.image_not_supported),
+        errorBuilder: (_, _, _) => const Icon(Icons.image_not_supported),
       ),
     ),
     const SizedBox(width: 8),
     Text(
         challenge.partnerName,
-        style: AppTextStyles.buttonText,
+        style: Theme.of(context).textTheme.bodySmall,
         overflow: TextOverflow.ellipsis,
       ),
   ],
@@ -89,7 +88,7 @@ class SponsoredChallengeCard extends StatelessWidget {
             ),
 
             const SizedBox(height: 8),
-            Text(challenge.title,  style: AppTextStyles.subHeading),
+            Text(challenge.title,  style: Theme.of(context).textTheme.bodyLarge),
             const SizedBox(height: 4),
             Text(challenge.description, maxLines: 2, overflow: TextOverflow.ellipsis),
             const Spacer(),

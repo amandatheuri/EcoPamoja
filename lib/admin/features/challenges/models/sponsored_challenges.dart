@@ -48,4 +48,21 @@ class SponsoredChallengesModel {
       icon: data['icon'],
     );
   }
+static SponsoredChallengesModel fromFirestore(Map<String, dynamic> doc, {String id = ''}) {
+  return SponsoredChallengesModel(
+    id: id,
+    title: doc['title'] ?? '',
+    description: doc['description'] ?? '',
+    partnerLogoKey: doc['partnerLogoKey'] ?? '',
+    partnerName: doc['partnerName'] ?? '',
+    storeLink: doc['storeLink'] ?? '',
+    dueDate: doc['dueDate'] ?? Timestamp.now(),
+    createdAt: (doc['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+    daily_Limit: doc['daily_limit'] ?? 1,
+    iconCode: doc['iconCode'],
+    iconFontFamily: doc['iconFontFamily'],
+    icon: doc['icon'],
+  );
+}
+
 }

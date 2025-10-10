@@ -6,7 +6,6 @@ import 'package:ecopamoja/features/authentication/widgets/loginform_desktop.dart
 import 'package:ecopamoja/features/authentication/widgets/loginprompt.dart';
 import 'package:ecopamoja/features/authentication/widgets/loginprompt_desktop.dart';
 import 'package:ecopamoja/theme_essentials/images.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -18,10 +17,10 @@ class LoginScreen extends StatelessWidget {
     final loginController = AuthController();
     final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
     final isDesktop = ResponsiveBreakpoints.of(context).largerOrEqualTo(TABLET);
+
     return Scaffold(
       appBar: isMobile
           ? AppBar(
-              title: Text('Login', style: AppTextStyles.title),
               backgroundColor: Colors.transparent,
               centerTitle: true,
             )
@@ -30,13 +29,12 @@ class LoginScreen extends StatelessWidget {
         child: Stack(
           children: [
             if (isDesktop)
-Positioned.fill(
-  child: Image.asset(
-    AppImages.background,
-    fit: BoxFit.cover,
-  ),
-),
-
+              Positioned.fill(
+                child: Image.asset(
+                  AppImages.background3,
+                  fit: BoxFit.cover,
+                ),
+              ),
             Center(
               child: Container(
                 constraints: BoxConstraints(
@@ -49,8 +47,8 @@ Positioned.fill(
                 ),
                 child: SingleChildScrollView(
                   child: isMobile
-                      ? _buildMobileLayout(loginController, context)
-                      : _buildDesktopLayout(loginController, context),
+                      ? _buildMobileLayout(loginController, context, isMobile)
+                      : _buildDesktopLayout(loginController, context, isMobile),
                 ),
               ),
             ),
@@ -63,21 +61,22 @@ Positioned.fill(
   Widget _buildMobileLayout(
     AuthController loginController,
     BuildContext context,
+    bool isMobile,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildLogo(),
         const SizedBox(height: 18.0),
-        _buildWelcomeText(ResponsiveBreakpoints.of(context).smallerThan(TABLET)),
+        _buildWelcomeText(context, isMobile),
         const SizedBox(height: 35.0),
         LoginForm(),
         const SizedBox(height: 20.0),
-        LoginDivider(),
+        const LoginDivider(),
         const SizedBox(height: 20.0),
-        ContinueWith(),
+        const ContinueWith(),
         const SizedBox(height: 18.0),
-        LoginPrompt(),
+        const LoginPrompt(),
       ],
     );
   }
@@ -85,37 +84,49 @@ Positioned.fill(
   Widget _buildDesktopLayout(
     AuthController loginController,
     BuildContext context,
+    bool isMobile,
   ) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildLogo(),
-              const SizedBox(height: 18.0),
-              _buildWelcomeText(ResponsiveBreakpoints.of(context).smallerThan(TABLET)),
-              const SizedBox(height: 35.0),
-              LoginForm2(),
-            ],
-          ),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 1000),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildLogo(),
+                    const SizedBox(height: 20.0),
+                    _buildWelcomeText(context, isMobile),
+                    const SizedBox(height: 30.0),
+                    const LoginForm2(),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    LoginDivider(),
+                    SizedBox(height: 20.0),
+                    ContinueWith(),
+                    SizedBox(height: 20.0),
+                    LoginPrompt2(),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-        const SizedBox(width: 40.0),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 100), // Align with form
-              LoginDivider(),
-              const SizedBox(height: 20.0),
-              ContinueWith(),
-              const SizedBox(height: 20.0),
-              LoginPrompt2(),
-            ],
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -123,14 +134,14 @@ Positioned.fill(
     return Image.asset(AppImages.logo, height: 80, width: 80);
   }
 
-  Widget _buildWelcomeText(isMobile) {
+
+  Widget _buildWelcomeText(BuildContext context, bool isMobile) {
     return Text(
       'Welcome back! Login to continue',
-      style: AppTextStyles.bodyText.copyWith(
-        fontSize: isMobile? 16.0: 14,
-        color: Colors.grey[700],
-        fontWeight: FontWeight.bold,
-      ),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            fontSize: isMobile ? 16.0 : 14,
+            fontWeight: FontWeight.bold,
+          ),
     );
   }
 }

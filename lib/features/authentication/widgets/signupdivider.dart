@@ -1,5 +1,4 @@
 import 'package:ecopamoja/theme_essentials/colors.dart';
-import 'package:ecopamoja/theme_essentials/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class SignUpDivider extends StatelessWidget {
@@ -20,10 +19,7 @@ class SignUpDivider extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
             'OR SignUp with',
-            style: AppTextStyles.bodyText.copyWith(
-              fontSize: 14.0,
-              color: AppColors.secondary,
-            ),
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.secondary)
           ),
         ),
         Expanded(
