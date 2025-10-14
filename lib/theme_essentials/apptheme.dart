@@ -10,7 +10,7 @@ class AppTheme {
     brightness: Brightness.light,
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: Colors.white,
-    textTheme: AppTexttheme.lightTheme,
+    textTheme: AppTextTheme.lightTheme,
     iconTheme: const IconThemeData(color: AppColors.lightThemeContrast),
     colorScheme: const ColorScheme.light(
       primary: AppColors.primary,
@@ -22,12 +22,10 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: AppColors.primary,
-        textStyle: AppTexttheme.lightTheme.bodyLarge,
-        shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
+        textStyle: AppTextTheme.lightTheme.bodyLarge,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     ),
-    )
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -35,7 +33,7 @@ class AppTheme {
     brightness: Brightness.dark,
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: Color(0xff0F0F0F),
-    textTheme: AppTexttheme.darkTheme,
+    textTheme: AppTextTheme.darkTheme,
     iconTheme: const IconThemeData(color: AppColors.secondary),
     colorScheme: const ColorScheme.dark(
       primary: AppColors.primary,
@@ -47,10 +45,10 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         foregroundColor: AppColors.secondary,
         backgroundColor: AppColors.primary,
-        textStyle: AppTexttheme.darkTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
-        shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
+        textStyle: AppTextTheme.darkTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     ),
   );

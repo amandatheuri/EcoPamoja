@@ -23,13 +23,8 @@ class SliverEcoAppBar extends ConsumerWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Glowing Profile Button 
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/home');
-                  },
-                  child: glowingProfileCircle(context, user?.photoUrl),
-                ),
+                // Glowing Profile Button
+                glowingProfileCircle(context, user?.photoUrl),
                 const SizedBox(width: 12),
 
                 //Greeting + Username
@@ -37,9 +32,9 @@ class SliverEcoAppBar extends ConsumerWidget {
                   child: Text(
                     'Hi, ${user?.username ?? "..."}',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: const Color.fromARGB(179, 221, 221, 221),
-                        ),
+                      fontWeight: FontWeight.bold,
+                      color: const Color.fromARGB(179, 221, 221, 221),
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -56,7 +51,7 @@ class SliverEcoAppBar extends ConsumerWidget {
                       right: 7.5,
                       top: 5,
                       child: Container(
-                       width: 13.5,
+                        width: 13.5,
                         padding: const EdgeInsets.all(2),
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,

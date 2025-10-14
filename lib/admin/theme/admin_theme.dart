@@ -9,13 +9,13 @@ class AppTheme {
     brightness: Brightness.light,
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: Colors.white,
-    textTheme: AppTexttheme.lightTheme,
+    textTheme: AppTextTheme.lightTheme,
   );
   static ThemeData darkTheme = ThemeData(
-     useMaterial3: true,
+    useMaterial3: true,
     brightness: Brightness.dark,
     primaryColor: AppColors.primary,
     scaffoldBackgroundColor: Colors.black,
-    textTheme: AppTexttheme.darkTheme,
+    textTheme: AppTextTheme.darkTheme,
   );
 }

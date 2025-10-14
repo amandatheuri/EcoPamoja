@@ -2,11 +2,12 @@
 
 import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 Widget glowingProfileCircle(BuildContext context, String? imageUrl) {
   return GestureDetector(
     onTap: () {
-      Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+      context.push('/user-profile');
     },
     child: Container(
       decoration: BoxDecoration(

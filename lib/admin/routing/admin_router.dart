@@ -22,7 +22,9 @@ final GoRouter adminRouter = GoRouter(
   ],
   redirect: (context, state) {
     final user = FirebaseAuth.instance.currentUser;
-    final isLoggingIn = state.matchedLocation == '/admin-login' || state.matchedLocation == '/admin-forgotpassword';
+    final isLoggingIn =
+        state.matchedLocation == '/admin-login' ||
+        state.matchedLocation == '/admin-forgotpassword';
 
     if (user == null && !isLoggingIn) {
       // Not logged in, trying to access protected route
