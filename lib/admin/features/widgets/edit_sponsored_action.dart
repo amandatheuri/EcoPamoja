@@ -3,7 +3,6 @@ import 'package:ecopamoja/utility_functions/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:ecopamoja/admin/features/challenges/models/sponsored_challenges.dart';
 import 'package:ecopamoja/admin/features/widgets/fetch_logos.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,65 +17,28 @@ class EditSponsoredChallengeDialog extends StatefulWidget {
 
 class _EditSponsoredChallengeDialogState extends State<EditSponsoredChallengeDialog> {
   final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
+  final _imageUrl = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _dailyLimitController = TextEditingController();
   final _partnerStoreLinkController = TextEditingController();
   final _dueDateController = TextEditingController();
   DateTime? _selectedDueDate;
   String? _selectedLogo;
-  String? _selectedIcon;
   bool _isSubmitting = false;
 
-  List<Map<String, dynamic>> availableIcons = [];
   List<Map<String, dynamic>> availableLogos = [];
 
   @override
   void initState() {
     super.initState();
     final challenge = widget.challenge;
-    _titleController.text = challenge.title;
+    _imageUrl.text = challenge.brandImageLink;
     _descriptionController.text = challenge.description;
-    _dailyLimitController.text = challenge.daily_Limit.toString();
     _partnerStoreLinkController.text = challenge.storeLink;
     _selectedDueDate = challenge.dueDate.toDate();
     _dueDateController.text = DateFormat('MMM dd, yyyy hh:mm a').format(_selectedDueDate!);
     _selectedLogo = challenge.partnerLogoKey;
-    _selectedIcon = challenge.icon;
 
     fetchLogos().then((logos) => setState(() => availableLogos = logos));
-
-    availableIcons = [
-      {'name': 'Nature', 'icon': Icons.nature},
-      {'name': 'Recycle', 'icon': Icons.recycling},
-      {'name': 'Eco', 'icon': Icons.eco},
-      {'name': 'Park', 'icon': Icons.park},
-      {'name': 'Bike', 'icon': Icons.pedal_bike},
-      {'name': 'Water', 'icon': Icons.water_drop},
-      {'name': 'Energy', 'icon': Icons.bolt},
-      {'name': 'Clean', 'icon': Icons.cleaning_services},
-      {'name': 'Leaf', 'icon': Icons.spa},
-      {'name': 'Tree', 'icon': Icons.forest},
-      {'name': 'Lightbulb', 'icon': Icons.lightbulb},
-      {'name': 'Compost', 'icon': Icons.compost},
-      {'name': 'Air', 'icon': Icons.air},
-      {'name': 'Garden', 'icon': Icons.yard},
-      {'name': 'Electric Car', 'icon': Icons.electric_car},
-      {'name': 'Solar Power', 'icon': Icons.solar_power},
-      {'name': 'Wind Power', 'icon': Icons.wind_power},
-      {'name': 'Fireplace', 'icon': Icons.fireplace},
-      {'name': 'Trash', 'icon': Icons.delete_outline},
-      {'name': 'Cloud', 'icon': Icons.cloud},
-      {'name': 'Flower', 'icon': Icons.local_florist},
-      {'name': 'Hand Wash', 'icon': Icons.soap},
-      {'name': 'Plant', 'icon': Icons.grass},
-      {'name': 'Globe', 'icon': Icons.public},
-      {'name': 'Heart', 'icon': Icons.favorite},
-      {'name': 'Shield', 'icon': Icons.shield},
-      {'name': 'Star', 'icon': Icons.star},
-      {'name': 'Check Circle', 'icon': Icons.check_circle},
-      {'name': 'Warning', 'icon': Icons.warning},
-    ];
   }
 
   Future<void> _pickDueDateTime() async {
@@ -101,18 +63,13 @@ class _EditSponsoredChallengeDialogState extends State<EditSponsoredChallengeDia
     setState(() => _isSubmitting = true);
 
     try {
-      final updatedIcon = availableIcons.firstWhere((icon) => icon['name'] == _selectedIcon);
       final logo = availableLogos.firstWhere((logo) => logo['key'] == _selectedLogo);
 
       await FirebaseFirestore.instance.collection('sponsored_challenges').doc(widget.challenge.id).update({
-        'title': _titleController.text.trim(),
+        'brandImage': _imageUrl.text.trim(),
         'description': _descriptionController.text.trim(),
-        'daily_limit': int.parse(_dailyLimitController.text.trim()),
         'storeLink': _partnerStoreLinkController.text.trim(),
         'dueDate': _selectedDueDate,
-        'icon': _selectedIcon,
-        'iconCode': updatedIcon['icon'].codePoint,
-        'iconFontFamily': updatedIcon['icon'].fontFamily,
         'partnerLogoKey': _selectedLogo,
         'partnerName': logo['name'],
       });
@@ -157,9 +114,11 @@ class _EditSponsoredChallengeDialogState extends State<EditSponsoredChallengeDia
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildField('Title', _titleController),
+              _buildField('brand image url', _imageUrl, validator: (value) {
+  AppValidators.validateUrl(value);
+  return null;
+  },),
               _buildField('Description', _descriptionController, maxLines: 3),
-              _buildField('Daily Limit', _dailyLimitController, inputType: TextInputType.number),
                _buildField(
   'Partner Store Link',
   _partnerStoreLinkController,
@@ -216,24 +175,6 @@ if (_partnerStoreLinkController.text.trim().isNotEmpty)
                   );
                 }).toList(),
                 onChanged: (value) => setState(() => _selectedLogo = value),
-              ),
-              const SizedBox(height: 12),
-              DropdownButtonFormField<String>(
-                value: _selectedIcon,
-                decoration: const InputDecoration(labelText: 'Select Icon', border: OutlineInputBorder()),
-                items: availableIcons.map((icon) {
-                  return DropdownMenuItem<String>(
-                    value: icon['name'],
-                    child: Row(
-                      children: [
-                        Icon(icon['icon'], color: AppColors.primary),
-                        const SizedBox(width: 8),
-                        Text(icon['name']),
-                      ],
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) => setState(() => _selectedIcon = value),
               ),
             ],
           ),

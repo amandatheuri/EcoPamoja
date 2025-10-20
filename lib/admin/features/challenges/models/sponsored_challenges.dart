@@ -9,13 +9,10 @@ class SponsoredChallengesModel {
   final String partnerLogoKey;
   final String partnerName;
   final String storeLink;
+  final String brandImageLink;
   final Timestamp dueDate;
   final DateTime createdAt;
-  final int daily_Limit;
-  final int? iconCode;
-  final String? iconFontFamily;
-  final String? icon;
-
+ 
   SponsoredChallengesModel({
     required this.id,
     required this.title,
@@ -23,12 +20,10 @@ class SponsoredChallengesModel {
     required this.partnerLogoKey,
     required this.partnerName,
     required this.storeLink,
+    required this.brandImageLink,
     required this.dueDate,
     required this.createdAt,
-    required this.daily_Limit,
-    this.iconCode,
-    this.iconFontFamily,
-    this.icon,
+   
   });
 
   factory SponsoredChallengesModel.fromDoc(DocumentSnapshot doc) {
@@ -40,12 +35,9 @@ class SponsoredChallengesModel {
       partnerLogoKey: data['partnerLogoKey'] ?? '',
       partnerName: data['partnerName'] ?? '',
       storeLink: data['storeLink'] ?? '',
+      brandImageLink: data['brandImage']?? '',
       dueDate: data['dueDate'] ?? Timestamp.now(),
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      daily_Limit: data['daily_limit'] ?? 1,
-      iconCode: data['iconCode'],
-      iconFontFamily: data['iconFontFamily'],
-      icon: data['icon'],
     );
   }
 static SponsoredChallengesModel fromFirestore(Map<String, dynamic> doc, {String id = ''}) {
@@ -56,12 +48,9 @@ static SponsoredChallengesModel fromFirestore(Map<String, dynamic> doc, {String 
     partnerLogoKey: doc['partnerLogoKey'] ?? '',
     partnerName: doc['partnerName'] ?? '',
     storeLink: doc['storeLink'] ?? '',
+    brandImageLink: doc['brandImage']?? '',
     dueDate: doc['dueDate'] ?? Timestamp.now(),
     createdAt: (doc['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-    daily_Limit: doc['daily_limit'] ?? 1,
-    iconCode: doc['iconCode'],
-    iconFontFamily: doc['iconFontFamily'],
-    icon: doc['icon'],
   );
 }
 

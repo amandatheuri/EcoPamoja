@@ -16,7 +16,6 @@ class ChallengeModel {
   final String? icon;
   final int? durationSeconds; // NEW
   final DateTime? dueDate; // NEW
-  final int? dailyLimit; // NEW
 
   ChallengeModel({
     required this.id,
@@ -30,7 +29,6 @@ class ChallengeModel {
     this.icon,
     this.durationSeconds,
     this.dueDate,
-    this.dailyLimit,
   });
 
   factory ChallengeModel.fromFirestore(DocumentSnapshot doc) {
@@ -52,7 +50,6 @@ class ChallengeModel {
       icon: data['icon'],
       durationSeconds: data['durationSeconds'],
       dueDate: data['dueDate'] != null ? (data['dueDate'] as Timestamp).toDate() : null,
-      dailyLimit: data['daily_limit'],
     );
   }
 
@@ -69,7 +66,6 @@ class ChallengeModel {
       'icon': icon,
       'durationSeconds': durationSeconds,
       'dueDate': dueDate != null ? Timestamp.fromDate(dueDate!) : null,
-      'daily_limit': dailyLimit,
     };
   }
 }

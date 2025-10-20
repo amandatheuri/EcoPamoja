@@ -1,7 +1,7 @@
 import 'package:ecopamoja/features/authentication/providers/user_provider.dart';
-import 'package:ecopamoja/features/home/did_you_know/did_you_know_carousel.dart';
 import 'package:ecopamoja/features/home/screens/mascot_section.dart';
 import 'package:ecopamoja/features/home/screens/progress.dart';
+import '../did_you_know/did_you_know_carousel.dart';
 import 'package:ecopamoja/shared_components/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

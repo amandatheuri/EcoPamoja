@@ -61,12 +61,7 @@ class SponsoredChallengeCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
   children: [
-    Icon(
-      IconData(challenge.iconCode ?? 0, fontFamily: challenge.iconFontFamily),
-      size: 25,
-      color: getColorByIconName(challenge.icon),
-    ),
-    const SizedBox(width: 8),
+
     ClipOval(
       child: Image.network(
         getLogoUrl(challenge.partnerLogoKey),

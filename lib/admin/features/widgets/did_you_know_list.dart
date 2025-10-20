@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecopamoja/features/did_you_know/did_you_know.dart';
+import 'package:ecopamoja/features/home/did_you_know/did_you_know.dart';
 import 'package:flutter/material.dart';
 
 class DidYouKnowFactList extends StatelessWidget {
