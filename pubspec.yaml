@@ -36,6 +36,7 @@ dependencies:
   share_plus: ^11.0.0 
   flutter_native_splash: ^2.4.6
   google_nav_bar: ^5.0.6
+  cached_network_image: ^3.3.1
   
 dev_dependencies:
   flutter_test:

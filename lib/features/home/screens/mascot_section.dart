@@ -91,6 +91,7 @@ class MascotSection extends ConsumerWidget {
                   border: Border.all(color: AppColors.complimentary, width: 1),
                   boxShadow: [
                     BoxShadow(
+                      // ignore: deprecated_member_use
                       color: Colors.black.withOpacity(0.15),
                       blurRadius: 4,
                       offset: const Offset(1, 2),

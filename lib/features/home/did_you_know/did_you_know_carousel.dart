@@ -17,7 +17,7 @@ class DidYouKnowCarousel extends ConsumerWidget {
 
     return factsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Text('Error: $e'),
+      error: (e, _) => Text('❗Check connection'),
       data: (facts) {
         return CarouselSlider.builder(
           itemCount: facts.length,

@@ -8,7 +8,7 @@ Expiry date
 Points to award
  */
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecopamoja/admin/features/widgets/fetch_logos.dart';
+import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:ecopamoja/utility_functions/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +25,7 @@ class _SponsoredFormState extends State<SponsoredInputForm> {
   //controllers and form key
   final _imageUrl = TextEditingController();
   final _logo =TextEditingController();
+  final _brandName = TextEditingController();
   final _description =TextEditingController();
   final _url =TextEditingController();
   final _expiryDate =TextEditingController();
@@ -32,41 +33,9 @@ class _SponsoredFormState extends State<SponsoredInputForm> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _selectedDueDate;
   final bool _isSubmitting = false;
-  String? _selectedLogo;
   List<Map<String, dynamic>> availableLogos = [];
   List<Map<String, dynamic>> filteredLogos = [];
-//getting images from github
-  
-   String getLogoUrl(String key) {
-    return 'https://amandatheuri.github.io/ecopamoja-assets/logos/$key';
-  }
-//listening to logo selection
-  @override
-  void initState() {
-    super.initState();
-    _logo.addListener(_filterLogos);
-    fetchLogos().then((logos) {
-      setState(() {
-        availableLogos = logos;
-        filteredLogos = List.from(logos);
-      });
-    });
-  }
-//remove logos once selected
-  @override
-  void dispose() {
-    _logo.dispose();
-    super.dispose();
-  }
-//filtering logo logic
-  void _filterLogos() {
-    final query = _logo.text.toLowerCase();
-    setState(() {
-      filteredLogos = availableLogos.where((logo) {
-        return logo['name'].toLowerCase().contains(query);
-      }).toList();
-    });
-  }
+
 //picking expiry date logic
   Future<void> _pickDueDateTime() async {
     final date = await showDatePicker(
@@ -125,52 +94,23 @@ TextFormField(
  validator: (value) {
                           AppValidators.validateUrl(value);
                           return null;
-                        }    ),              SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                        value: _selectedLogo,
-                        decoration: const InputDecoration(labelText: 'Select Partner Logo'),
-                        items: [
-                          DropdownMenuItem<String>(
-                            value: null,
-                            enabled: false,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: TextField(
-                                controller: _logo,
-                                decoration: InputDecoration(
-                                  hintText: 'Search logos...',
-                                  border: OutlineInputBorder(),
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                                  isDense: true,
-                                ),
-                              ),
-                            ),
-                          ),
-                          ...filteredLogos.map((logo) {
-                            return DropdownMenuItem<String>(
-                              value: logo['key'],
-                              child: Container(
-                                constraints: BoxConstraints(maxHeight: 40),
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage: NetworkImage(
-                                        'https://amandatheuri.github.io/ecopamoja-assets/logos/${logo['key']}',
-                                      ),
-                                      radius: 12,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Flexible(child: Text(logo['name'])),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                        ],
-                        onChanged: (value) => setState(() => _selectedLogo = value),
-                        menuMaxHeight: 200,
-                        isExpanded: true,
-                      ),
+                        }    ), 
+              SizedBox(height: 10),
+              TextFormField(
+      controller: _logo,
+      keyboardType: TextInputType.url,
+      decoration: const InputDecoration(
+        labelText: 'Select Partner Logo',
+        border: OutlineInputBorder(),
+        hintText: 'https://example.com/logo.png',
+      ),
+              validator: (value) {
+                          AppValidators.validateUrl(value);
+                          return null;
+                        }    
+                        ), 
+               SizedBox(height: 10),
+               _buildField('Brand Name', _brandName, maxLines: 3, hintText: ''),
                SizedBox(height: 10),
               _buildField('Description', _description, maxLines: 3, hintText: 'Short description'),
                SizedBox(height: 10),
@@ -246,46 +186,20 @@ TextFormField(
       );
       return;
     }
-
-
-    if (_selectedLogo == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('⚠️ Please select a partner logo.'),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return;
-    }
-
-    final partnerMatch = availableLogos.firstWhere(
-      (logo) => logo['key'] == _selectedLogo,
-      orElse: () => {},
-    );
-
-    if (partnerMatch.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('❌ Partner logo not found.'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
 //database logic
     try {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('⏳ Submitting challenge...'),
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: AppColors.turqoise,
         ),
       );
 
       await FirebaseFirestore.instance.collection('sponsored_challenges').add({
         'brandImage': _imageUrl.text.trim(),
         'description': _description.text.trim(),
-        'partnerName': partnerMatch['name'],
-        'partnerLogoKey': _selectedLogo,
+        'partnerName': _brandName.text.trim(),
+        'partnerLogoKey': _logo.text.trim(),
         'storeLink': _url.text.trim(),
         'dueDate': _selectedDueDate,
         'createdAt': FieldValue.serverTimestamp(),

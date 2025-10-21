@@ -33,6 +33,7 @@ class MainNavigationScreen extends ConsumerWidget {
           boxShadow: [
             BoxShadow(
               blurRadius: 12,
+              // ignore: deprecated_member_use
               color: Colors.black.withOpacity(0.15),
             ),
           ],

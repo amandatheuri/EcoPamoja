@@ -15,6 +15,7 @@ Quizzes- colors.dart: primary, icon: brain
 daily habits- colors.dart: complimentary, icon: leaf 
 waste reduction- colors.dart: turqoise, icon: trash can 
 */
+import 'package:ecopamoja/features/eco_challenges/providers/fetchdata_provider.dart';
 import 'package:ecopamoja/features/eco_challenges/screens/sponsored.dart';
 import 'package:ecopamoja/shared_components/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserChallenges extends ConsumerWidget {
   const UserChallenges({super.key});
-
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final challenges = ref.watch(sponsoredChallengesProvider);
     return Scaffold(
       appBar: const CustomEcoAppBar(), 
       body: SingleChildScrollView(
@@ -62,8 +64,9 @@ class UserChallenges extends ConsumerWidget {
                     ),
                   SizedBox(height: 20),
                   //sponsored content
-                  SponsoredCarousel(),
-                ],
+                if (challenges.hasValue && challenges.value!.isNotEmpty)
+                SponsoredCarousel()
+                ]
               ),
             ),
       
