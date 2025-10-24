@@ -4,8 +4,11 @@ import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SliverEcoAppBar extends ConsumerWidget {
+class SliverEcoAppBar extends ConsumerWidget implements PreferredSizeWidget {
   const SliverEcoAppBar({super.key});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(100);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -7,7 +7,10 @@ final userDocProvider = FutureProvider<DocumentSnapshot>((ref) async {
   final uid = FirebaseAuth.instance.currentUser?.uid;
   if (uid == null) throw Exception('User not logged in');
 
-  final doc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  final doc = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get();
   if (!doc.exists) {
     throw Exception('User document does not exist');
   }
@@ -22,29 +25,32 @@ final userDataProvider = Provider<UserData?>((ref) {
       final data = doc.data() as Map<String, dynamic>?;
       if (data == null) return null;
       return UserData(
-  uid: data['uid'] ?? '',
-  email: data['email'] ?? '',
-  username: data['username'] ?? '',
-  photoUrl: data['photoUrl'],
-  createdAt: data['createdAt']?.toDate(),
-  lastActive: data['lastActive']?.toDate(),
-  streak: data['streak'] ?? 0,
-  isAdmin: data['isAdmin'] ?? false,
-  medalCount: data['medalCount'] ?? 0,
-  trophiesEarned: data['trophiesEarned'] ?? 0,
-  ecoWarrior: data['ecoWarrior'] ?? false,
-  quizzesCompleted: data['quizzesCompleted'] ?? 0,
-  actionsCompleted: data['actionsCompleted'] ?? 0,
-  totalChallengesCompleted: data['totalChallengesCompleted'] ?? 0,
-  dailyGoal: data['dailyGoal'] ?? 3,
-  todayChallengesCompleted: data['todayChallengesCompleted'] ?? 0,
-  completedChallenges: List<String>.from(data['completedChallenges'] ?? []),
-  notificationsEnabled: data['notificationsEnabled'] ?? true,
-  preferredCategories: List<String>.from(data['preferredCategories'] ?? []),
-  themeMode: data['themeMode'] ?? 'system',
-  hasSeenIntro: data['hasSeenIntro'] ?? false,
-);
-
+        uid: data['uid'] ?? '',
+        email: data['email'] ?? '',
+        username: data['username'] ?? '',
+        photoUrl: data['photoUrl'],
+        createdAt: data['createdAt']?.toDate(),
+        lastActive: data['lastActive']?.toDate(),
+        streak: data['streak'] ?? 0,
+        isAdmin: data['isAdmin'] ?? false,
+        medalCount: data['medalCount'] ?? 0,
+        trophiesEarned: data['trophiesEarned'] ?? 0,
+        ecoWarrior: data['ecoWarrior'] ?? false,
+        quizzesCompleted: data['quizzesCompleted'] ?? 0,
+        actionsCompleted: data['actionsCompleted'] ?? 0,
+        totalChallengesCompleted: data['totalChallengesCompleted'] ?? 0,
+        dailyGoal: data['dailyGoal'] ?? 3,
+        todayChallengesCompleted: data['todayChallengesCompleted'] ?? 0,
+        completedChallenges: List<String>.from(
+          data['completedChallenges'] ?? [],
+        ),
+        notificationsEnabled: data['notificationsEnabled'] ?? true,
+        preferredCategories: List<String>.from(
+          data['preferredCategories'] ?? [],
+        ),
+        themeMode: data['themeMode'] ?? 'system',
+        hasSeenIntro: data['hasSeenIntro'] ?? false,
+      );
     },
     loading: () => null,
     error: (_, _) => null,
