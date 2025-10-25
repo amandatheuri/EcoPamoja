@@ -16,7 +16,6 @@ class ProgressSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Example: combine all progress data
     final int ongoingChallenges = quizzesCompleted + actionsCompleted;
     final int totalChallengesForBadge = 15;
     final int remainingForBadge =

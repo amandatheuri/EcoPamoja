@@ -9,19 +9,20 @@ class UserData {
   final DateTime lastActive;
   final int streak;
   final bool isAdmin;
-  final int medalCount;
-  final int trophiesEarned;
-  final bool ecoWarrior;
   final int quizzesCompleted;
-  final int actionsCompleted;
+  final int dailyHabitsCompleted;
+  final int wasteReductionCompleted;
   final int totalChallengesCompleted;
-  final int dailyGoal;
   final int todayChallengesCompleted;
-  final List<String> completedChallenges;
+  final int dailyGoal;
   final bool notificationsEnabled;
-  final List<String> preferredCategories;
+  final List<String> completedSponsored;
   final String themeMode;
   final bool hasSeenIntro;
+  final int groupsJoined;
+  final int pointsEarned;
+  final List<String> badgesEarned;
+  final DateTime lastReset; 
 
   UserData({
     required this.uid,
@@ -32,19 +33,21 @@ class UserData {
     required this.lastActive,
     required this.streak,
     required this.isAdmin,
-    required this.medalCount,
-    required this.trophiesEarned,
-    required this.ecoWarrior,
+    required this.badgesEarned,
     required this.quizzesCompleted,
-    required this.actionsCompleted,
+    required this.dailyHabitsCompleted,
+    required this.wasteReductionCompleted,
     required this.totalChallengesCompleted,
-    required this.dailyGoal,
     required this.todayChallengesCompleted,
-    required this.completedChallenges,
+    required this.dailyGoal,
     required this.notificationsEnabled,
-    required this.preferredCategories,
+    //required this.preferredCategories,
     required this.themeMode,
     required this.hasSeenIntro,
+    required this.groupsJoined,
+    required this.pointsEarned,
+    required this.lastReset,
+    required this.completedSponsored
   });
 
   factory UserData.fromDocument(DocumentSnapshot doc) {
@@ -57,21 +60,22 @@ class UserData {
       photoUrl: data['photoUrl'],
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       lastActive: (data['lastActive'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      lastReset: (data['lastReset'] as Timestamp?)?.toDate()?? DateTime.now(),
       streak: data['streak'] ?? 0,
       isAdmin: data['isAdmin'] ?? false,
-      medalCount: data['medalCount'] ?? 0,
-      trophiesEarned: data['trophiesEarned'] ?? 0,
-      ecoWarrior: data['ecoWarrior'] ?? false,
       quizzesCompleted: data['quizzesCompleted'] ?? 0,
-      actionsCompleted: data['actionsCompleted'] ?? 0,
+      dailyHabitsCompleted: data['actionsCompleted'] ?? 0,
       totalChallengesCompleted: data['totalChallengesCompleted'] ?? 0,
       dailyGoal: data['dailyGoal'] ?? 3,
       todayChallengesCompleted: data['todayChallengesCompleted'] ?? 0,
-      completedChallenges: List<String>.from(data['completedChallenges'] ?? []),
       notificationsEnabled: data['notificationsEnabled'] ?? true,
-      preferredCategories: List<String>.from(data['preferredCategories'] ?? []),
+      badgesEarned: List<String>.from(data['badgesEarned'] ?? []),
+      completedSponsored: List<String>.from(data['completedSponsored'] ?? []),
       themeMode: data['themeMode'] ?? 'dark',
       hasSeenIntro: data['hasSeenIntro'] ?? false,
+      groupsJoined: data['groupsJoined']?? 0,
+      pointsEarned: data['pointsEarned']?? 0,
+      wasteReductionCompleted: data['wasteReductionCompleted']?? 0,
     );
   }
 
@@ -84,19 +88,21 @@ class UserData {
       'lastActive': Timestamp.fromDate(lastActive),
       'streak': streak,
       'isAdmin': isAdmin,
-      'medalCount': medalCount,
-      'trophiesEarned': trophiesEarned,
-      'ecoWarrior': ecoWarrior,
+      'badgesEarned': badgesEarned,
       'quizzesCompleted': quizzesCompleted,
-      'actionsCompleted': actionsCompleted,
+      'dailyHabitsCompleted': dailyHabitsCompleted,
       'totalChallengesCompleted': totalChallengesCompleted,
-      'dailyGoal': dailyGoal,
       'todayChallengesCompleted': todayChallengesCompleted,
-      'completedChallenges': completedChallenges,
+      'dailyGoal': dailyGoal,
+      'wasteReductionCompleted': wasteReductionCompleted,
       'notificationsEnabled': notificationsEnabled,
-      'preferredCategories': preferredCategories,
+      //'preferredCategories': preferredCategories,
       'themeMode': themeMode,
       'hasSeenIntro': hasSeenIntro,
+      'pointsEarned': pointsEarned,
+      'groupsJoined': groupsJoined,
+      'lastReset':lastReset,
+      'completedSponsored': completedSponsored,
     };
   }
 }

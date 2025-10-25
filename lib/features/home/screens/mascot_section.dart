@@ -82,7 +82,7 @@ class MascotSection extends ConsumerWidget {
 
             // Positioned streak badge
             Positioned(
-              right: 25,
+              right: 16,
               top: 30,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),

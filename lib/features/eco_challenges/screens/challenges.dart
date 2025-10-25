@@ -16,6 +16,7 @@ daily habits- colors.dart: complimentary, icon: leaf
 waste reduction- colors.dart: turqoise, icon: trash can 
 */
 import 'package:ecopamoja/features/eco_challenges/providers/fetchdata_provider.dart';
+import 'package:ecopamoja/features/eco_challenges/screens/quizdisplay.dart';
 import 'package:ecopamoja/features/eco_challenges/screens/sponsored.dart';
 import 'package:ecopamoja/shared_components/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -23,53 +24,82 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserChallenges extends ConsumerWidget {
   const UserChallenges({super.key});
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final challenges = ref.watch(sponsoredChallengesProvider);
+
     return Scaffold(
-      appBar: const CustomEcoAppBar(), 
-      body: SingleChildScrollView(
-          //Heading
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 28, 20, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //bold text
-                  Row(
-                    children: [
-                  Text(
-                    'Complete Challenges',
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(width: 8),
-                  //subtitle
-                  Expanded(
-                    child: Text(
-                      'to earn',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w100,
-                      ),
-                    ),
-                  ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'badges and level up!',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w100,
-                    ),
-                    ),
-                  SizedBox(height: 20),
-                  //sponsored content
-                if (challenges.hasValue && challenges.value!.isNotEmpty)
-                SponsoredCarousel()
-                ]
+      appBar: const CustomEcoAppBar(),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
+        children: [
+          // Heading
+          Row(
+            children: [
+              Text(
+                'Complete Challenges',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'to earn',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(fontWeight: FontWeight.w100),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'badges and level up!',
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.copyWith(fontWeight: FontWeight.w100),
+          ),
+          const SizedBox(height: 20),
+
+          // Sponsored content
+          if (challenges.hasValue && challenges.value!.isNotEmpty)
+            const SponsoredCarousel(),
+
+          const SizedBox(height: 16),
+
+          // Challenge cards
+          QuizChallengeCard(
+            title: 'Quizzes', 
+            total: 3, 
+            onContinue: (){}, 
+            progressKey: 'quizzes', 
+            icon: Icons.psychology,
             ),
-      
+            const SizedBox(height: 15),
+            QuizChallengeCard(
+            title: 'Daily Habits', 
+            total: 3, 
+            icon: Icons.eco,
+            onContinue: (){}, 
+            progressKey: 'habits'
+            ),
+            const SizedBox(height: 15),
+            QuizChallengeCard(
+            title: 'Waste Reduction', 
+            total: 3,
+            icon: Icons.delete, 
+            onContinue: (){}, 
+            progressKey: 'waste'
+            ),
+          const SizedBox(height: 15),
+          
+          const SizedBox(height: 60), 
+        ],
       ),
     );
   }

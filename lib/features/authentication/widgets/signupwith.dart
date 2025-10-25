@@ -15,7 +15,7 @@ class SignUpWith extends ConsumerWidget {
       final user = await ref.read(authControllerProvider).signInWithGoogle();
       if (user != null){
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Sign in as ${user.displayName}', style: Theme.of(context).textTheme.bodySmall),backgroundColor: AppColors.primary,));
-        context.go('/home');
+        context.go('/navigation');
       }else{
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Google sign in failed', style: Theme.of(context).textTheme.bodySmall),backgroundColor: AppColors.primary,));
       }

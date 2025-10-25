@@ -31,26 +31,27 @@ if (user != null) {
 
   if (!userDoc.exists) {
     await _firestore.collection('users').doc(user.uid).set({
-      'email': user.email,
-      'username': user.displayName ?? 'Anonymous',
-      'photoUrl': user.photoURL,
-      'createdAt': FieldValue.serverTimestamp(),
-      'lastActive': FieldValue.serverTimestamp(),
-      'streak': 0,
-      'isAdmin': false,
-      'medalCount': 0,
-      'trophiesEarned': 0,
-      'ecoWarrior': false,
-      'quizzesCompleted': 0,
-      'actionsCompleted': 0,
-      'totalChallengesCompleted': 0,
-      'dailyGoal': 3,
-      'todayChallengesCompleted': 0,
-      'completedChallenges': [],
-      'notificationsEnabled': true,
-      'preferredCategories': [],
-      'themeMode': 'dark',
-      'hasSeenIntro': false,
+  'email': user.email ?? '',
+  'username': user.displayName ?? 'Anonymous',
+  'photoUrl': user.photoURL,  
+  'createdAt': DateTime.now(),
+  'lastActive': DateTime.now(),
+  'lastReset': DateTime.now(),
+  'streak': 0,
+  'isAdmin': false,
+  'badgesEarned': [],
+  'completedSponsored': [],
+  'quizzesCompleted': 0,
+  'dailyHabitsCompleted': 0,
+  'wasteReductionCompleted': 0,
+  'totalChallengesCompleted': 0,
+  'todayChallengesCompleted': 0,
+  'dailyGoal': 3,
+  'notificationsEnabled': true,
+  'themeMode': 'dark',
+  'hasSeenIntro': false,
+  'groupsJoined': 0,
+  'pointsEarned': 0,
     });
   }
 }
@@ -117,29 +118,31 @@ Future<User?> registerWithEmail({
       email: email,
       password: password,
     );
-
+final user = userCredential.user;
+   if (user == null) return null;
     // Save user to Firestore
    await _firestore.collection('users').doc(userCredential.user!.uid).set({
-  'email': email,
-  'username': username,
-  'photoUrl': null,
-  'createdAt': FieldValue.serverTimestamp(),
-  'lastActive': FieldValue.serverTimestamp(),
+  'email': user.email ?? '',
+  'username': user.displayName ?? 'Anonymous',
+  'photoUrl': user.photoURL,
+  'createdAt': DateTime.now(),
+  'lastActive': DateTime.now(),
+  'lastReset': DateTime.now(),
   'streak': 0,
   'isAdmin': false,
-  'medalCount': 0,
-  'trophiesEarned': 0,
-  'ecoWarrior': false,
+  'badgesEarned': [],
+  'completedSponsored': [], // ✅ important
   'quizzesCompleted': 0,
-  'actionsCompleted': 0,
+  'dailyHabitsCompleted': 0,
+  'wasteReductionCompleted': 0,
   'totalChallengesCompleted': 0,
-  'dailyGoal': 3,
   'todayChallengesCompleted': 0,
-  'completedChallenges': [],
+  'dailyGoal': 3,
   'notificationsEnabled': true,
-  'preferredCategories': [],
   'themeMode': 'dark',
   'hasSeenIntro': false,
+  'groupsJoined': 0,
+  'pointsEarned': 0,
 });
 
 
