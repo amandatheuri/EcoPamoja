@@ -1,6 +1,8 @@
-import 'package:ecopamoja/theme_essentials/colors.dart';
+import 'package:ecopamoja/features/rewards/custom_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'logic.dart';
 
 // 'Unlocked' reward color
 final Color unlocked = Color(0xff35B89B);
@@ -11,6 +13,9 @@ class Rewards extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final rewards = ref.watch(rewardsProvider);
+    final level = (rewards.points / 100).ceil() + 1;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -31,7 +36,7 @@ class Rewards extends ConsumerWidget {
                     Icon(Icons.star, size: 50),
                     const SizedBox(height: 10),
                     Text(
-                      "Level 5",
+                      "Level $level",
                       style: Theme.of(
                         context,
                       ).textTheme.bodyLarge!.copyWith(fontSize: 24),
@@ -55,70 +60,26 @@ class Rewards extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 10),
+
+              // categories
               SizedBox(
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          color: null,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(color: rewardBorder),
-                          ),
-                          width: 132,
-                          height: 114,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Icon(Icons.star_outline_rounded),
-                              Text(
-                                "First step",
-                                style: Theme.of(context).textTheme.labelMedium,
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: unlocked,
-                                ),
-                                child: Text(
-                                  "Unlocked",
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ),
-                            ],
+                        RewardContainer(
+                          category:
+                              badgeDisplayNames[BadgeCategories.firstStep]!,
+                          unlockedCategory: rewards.unlockedBadges.contains(
+                            BadgeCategories.firstStep,
                           ),
                         ),
-                        Container(
-                          color: null,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(color: rewardBorder),
-                          ),
-                          width: 132,
-                          height: 114,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Icon(Icons.star_outline_rounded),
-                              Text(
-                                "Week warrior",
-                                style: Theme.of(context).textTheme.labelMedium,
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: unlocked,
-                                ),
-                                child: Text(
-                                  "Unlocked",
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ),
-                            ],
+                        RewardContainer(
+                          category:
+                              badgeDisplayNames[BadgeCategories.weekWarrior]!,
+                          unlockedCategory: rewards.unlockedBadges.contains(
+                            BadgeCategories.weekWarrior,
                           ),
                         ),
                       ],
@@ -127,69 +88,18 @@ class Rewards extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          color: null,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(color: rewardBorder),
-                          ),
-                          width: 132,
-                          height: 114,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Icon(Icons.star_outline_rounded),
-                              Text(
-                                "Eco expert",
-                                style: Theme.of(context).textTheme.labelMedium,
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: unlocked,
-                                ),
-                                child: Text(
-                                  "Unlocked",
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ),
-                            ],
+                        RewardContainer(
+                          category:
+                              badgeDisplayNames[BadgeCategories.ecoExpert]!,
+                          unlockedCategory: rewards.unlockedBadges.contains(
+                            BadgeCategories.ecoExpert,
                           ),
                         ),
-                        Opacity(
-                          opacity: 0.5,
-                          child: Container(
-                            color: null,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              border: Border.all(color: rewardBorder),
-                            ),
-                            width: 132,
-                            height: 114,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Icon(Icons.star_outline_rounded),
-                                Text(
-                                  "Green champion",
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.labelMedium,
-                                ),
-                                // Container(
-                                //   decoration: BoxDecoration(
-                                //     borderRadius: BorderRadius.circular(25),
-                                //     color: unlocked,
-                                //   ),
-                                //   child: Text(
-                                //     "Unlocked",
-                                //     style: Theme.of(context).textTheme.bodySmall
-                                //   ),
-                                // ),
-                              ],
-                            ),
+                        RewardContainer(
+                          category:
+                              badgeDisplayNames[BadgeCategories.greenChampion]!,
+                          unlockedCategory: rewards.unlockedBadges.contains(
+                            BadgeCategories.greenChampion,
                           ),
                         ),
                       ],

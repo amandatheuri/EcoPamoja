@@ -4,7 +4,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-final authControllerProvider = Provider((ref)=> AuthController());
+final authControllerProvider = Provider((ref) => AuthController());
 
 class AuthController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -12,144 +12,159 @@ class AuthController {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   //logic for sign in with google
-Future<User?> signInWithGoogle()async{
- try{
-  final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-  print('🔵 googleUser: $googleUser');
-  if(googleUser==null)return null;
-  final GoogleSignInAuthentication googleAuth= await googleUser.authentication;
-  print('🟢 googleAuth: accessToken=${googleAuth.accessToken}, idToken=${googleAuth.idToken}');
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth.accessToken,
-    idToken: googleAuth.idToken
-  );
-  final userCredential= await  _auth.signInWithCredential(credential);
-  final user = userCredential.user;
+  Future<User?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      print('🔵 googleUser: $googleUser');
+      if (googleUser == null) return null;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      print(
+        '🟢 googleAuth: accessToken=${googleAuth.accessToken}, idToken=${googleAuth.idToken}',
+      );
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      final userCredential = await _auth.signInWithCredential(credential);
+      final user = userCredential.user;
 
-if (user != null) {
-  final userDoc = await _firestore.collection('users').doc(user.uid).get();
+      if (user != null) {
+        final userDoc = await _firestore
+            .collection('users')
+            .doc(user.uid)
+            .get();
 
-  if (!userDoc.exists) {
-    await _firestore.collection('users').doc(user.uid).set({
-      'email': user.email,
-      'username': user.displayName ?? 'Anonymous',
-      'photoUrl': user.photoURL,
-      'createdAt': FieldValue.serverTimestamp(),
-      'lastActive': FieldValue.serverTimestamp(),
-      'streak': 0,
-      'isAdmin': false,
-      'medalCount': 0,
-      'trophiesEarned': 0,
-      'ecoWarrior': false,
-      'quizzesCompleted': 0,
-      'actionsCompleted': 0,
-      'totalChallengesCompleted': 0,
-      'dailyGoal': 3,
-      'todayChallengesCompleted': 0,
-      'completedChallenges': [],
-      'notificationsEnabled': true,
-      'preferredCategories': [],
-      'themeMode': 'dark',
-      'hasSeenIntro': false,
-    });
+        if (!userDoc.exists) {
+          await _firestore.collection('users').doc(user.uid).set({
+            'email': user.email,
+            'username': user.displayName ?? 'Anonymous',
+            'photoUrl': user.photoURL,
+            'createdAt': FieldValue.serverTimestamp(),
+            'lastActive': FieldValue.serverTimestamp(),
+            'streak': 0,
+            'isAdmin': false,
+            'medalCount': 0,
+            'trophiesEarned': 0,
+            'ecoWarrior': false,
+            'quizzesCompleted': 0,
+            'actionsCompleted': 0,
+            'totalChallengesCompleted': 0,
+            'dailyGoal': 3,
+            'todayChallengesCompleted': 0,
+            'completedChallenges': [],
+            'notificationsEnabled': true,
+            'preferredCategories': [],
+            'themeMode': 'dark',
+            'hasSeenIntro': false,
+          });
+        }
+      }
+
+      print('🟡 userCredential: ${userCredential.user}');
+      return userCredential.user;
+    } catch (e) {
+      print('🔴 Google Sign-In error: $e');
+      return null;
+    }
   }
-}
-
-  print('🟡 userCredential: ${userCredential.user}');
-  return userCredential.user;
- }catch(e){
-  print('🔴 Google Sign-In error: $e');
-    return null;
- }
-}
 
   //logic for login
   Future<UserCredential?> loginWithEmail({
-  required String email,
-  required String password,
-}) async {
-  try {
-    // First: check if this email exists in admin list
-    final checkAdmin = await _firestore.collection('admin_users').doc(email).get();
+    required String email,
+    required String password,
+  }) async {
+    try {
+      // First: check if this email exists in admin list
+      final checkAdmin = await _firestore
+          .collection('admin_users')
+          .doc(email)
+          .get();
 
-    if (checkAdmin.exists) {
-      // This is an admin account block login on user side
-      throw FirebaseAuthException(
-        code: 'admin-account',
-        message: 'This email is registered as an admin. Please use the admin app.',
+      if (checkAdmin.exists) {
+        // This is an admin account block login on user side
+        throw FirebaseAuthException(
+          code: 'admin-account',
+          message:
+              'This email is registered as an admin. Please use the admin app.',
+        );
+      }
+
+      // Not an admin allow sign in
+      final userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
       );
+
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      print('❌ FirebaseAuth error: ${e.message}');
+      return null;
+    } catch (e) {
+      print('❌ Unknown error: $e');
+      return null;
     }
-
-    // Not an admin allow sign in
-    final userCredential = await _auth.signInWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-    
-    return userCredential;
-
-  } on FirebaseAuthException catch (e) {
-    print('❌ FirebaseAuth error: ${e.message}');
-    return null;
-  } catch (e) {
-    print('❌ Unknown error: $e');
-    return null;
   }
-}
 
   //logic for username
- Future<bool> checkUsernameExists(String username) async {
-  final result = await _firestore
-      .collection('users')
-      .where('username', isEqualTo: username)
-      .get();
+  Future<bool> checkUsernameExists(String username) async {
+    final result = await _firestore
+        .collection('users')
+        .where('username', isEqualTo: username)
+        .get();
 
-  return result.docs.isNotEmpty;
-}
+    return result.docs.isNotEmpty;
+  }
 
-Future<User?> registerWithEmail({
-  required String email,
-  required String password,
-  required String username,
-}) async {
-  try {
-    final userCredential = await _auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+  Future<User?> registerWithEmail({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
+    try {
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-    // Save user to Firestore
-   await _firestore.collection('users').doc(userCredential.user!.uid).set({
-  'email': email,
-  'username': username,
-  'photoUrl': null,
-  'createdAt': FieldValue.serverTimestamp(),
-  'lastActive': FieldValue.serverTimestamp(),
-  'streak': 0,
-  'isAdmin': false,
-  'medalCount': 0,
-  'trophiesEarned': 0,
-  'ecoWarrior': false,
-  'quizzesCompleted': 0,
-  'actionsCompleted': 0,
-  'totalChallengesCompleted': 0,
-  'dailyGoal': 3,
-  'todayChallengesCompleted': 0,
-  'completedChallenges': [],
-  'notificationsEnabled': true,
-  'preferredCategories': [],
-  'themeMode': 'dark',
-  'hasSeenIntro': false,
-});
+      // Save user to Firestore
+      await _firestore.collection('users').doc(userCredential.user!.uid).set({
+        'email': email,
+        'username': username,
+        'photoUrl': null,
+        'createdAt': FieldValue.serverTimestamp(),
+        'lastActive': FieldValue.serverTimestamp(),
+        'streak': 0,
+        'isAdmin': false,
+        'medalCount': 0,
+        'trophiesEarned': 0,
+        'ecoWarrior': false,
+        'quizzesCompleted': 0,
+        'actionsCompleted': 0,
+        'totalChallengesCompleted': 0,
+        'dailyGoal': 3,
+        'todayChallengesCompleted': 0,
+        'completedChallenges': [],
+        'notificationsEnabled': true,
+        'preferredCategories': [],
+        'themeMode': 'dark',
+        'hasSeenIntro': false,
+      });
 
+      return userCredential.user;
+    } catch (e) {
+      print('Registration error: $e');
+      return null;
+    }
+  }
 
-    return userCredential.user;
-  } catch (e) {
-    print('Registration error: $e');
-    return null;
+  Future<void> sendPasswordResetEmail(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
+
+  // sign out function
+  Future<void> signOut() async {
+    await _auth.signOut();
+    await _googleSignIn.signOut();
   }
 }
-Future<void> sendPasswordResetEmail(String email)async{
-  await _auth.sendPasswordResetEmail(email: email);
-}
-  }
