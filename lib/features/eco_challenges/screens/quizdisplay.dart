@@ -4,8 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-final _selectedCardProvider =
-    StateProvider.autoDispose<bool>((ref) => false);
+final selectedCardProvider = StateProvider<String?>((ref) => null);
 
 class QuizChallengeCard extends ConsumerWidget {
   final String title;
@@ -27,7 +26,8 @@ class QuizChallengeCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final newChallengesAsync = ref.watch(newChallengesProvider);
     final dailyProgressAsync = ref.watch(dailyProgressProvider);
-    final isSelected = ref.watch(_selectedCardProvider);
+    final selectedKey = ref.watch(selectedCardProvider);
+    final isSelected = selectedKey == progressKey;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -123,7 +123,7 @@ class QuizChallengeCard extends ConsumerWidget {
                     ),
                   ),
                   error: (err, _) {
-                    debugPrint('🔥 Progress error: $err');
+                    debugPrint('Progress error: $err');
                     return const Text(
                       'Error loading progress',
                       style: TextStyle(color: Colors.grey),
@@ -151,7 +151,7 @@ class QuizChallengeCard extends ConsumerWidget {
                   style: TextStyle(color: Color(0xFFB8FF60)),
                 ),
                 error: (err, _) {
-                  debugPrint('🔥 UI Error fetching challenges: $err');
+                  debugPrint('UI Error fetching challenges: $err');
                   return const Text(
                     'Error',
                     style: TextStyle(color: Colors.grey, fontSize: 12),
@@ -171,11 +171,10 @@ class QuizChallengeCard extends ConsumerWidget {
             child: ElevatedButton(
               onPressed: () {
                 //Highlight the card
-                ref.read(_selectedCardProvider.notifier).state = true;
-
+              ref.read(selectedCardProvider.notifier).state = progressKey;
                 //Remove highlight after 3 seconds
                 Future.delayed(const Duration(seconds: 3), () {
-                  ref.read(_selectedCardProvider.notifier).state = false;
+              ref.read(selectedCardProvider.notifier).state = null;
                 });
 
                 //Continue action

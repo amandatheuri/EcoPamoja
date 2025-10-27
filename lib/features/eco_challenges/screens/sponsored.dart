@@ -19,6 +19,7 @@ handle done button logic when user visits a url
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecopamoja/features/eco_challenges/providers/fetchdata_provider.dart';
+import 'package:ecopamoja/features/home/widgets/updateUserStreak.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -43,8 +44,7 @@ class SponsoredCarousel extends ConsumerWidget {
       return;
     }
 
-    final userRef =
-        FirebaseFirestore.instance.collection('users').doc(user.uid);
+    final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
 
     // --- Check if user already completed this challenge ---
     final userSnap = await userRef.get();
@@ -65,7 +65,7 @@ class SponsoredCarousel extends ConsumerWidget {
         await launchUrl(uri, mode: LaunchMode.platformDefault);
       }
     } catch (e) {
-      debugPrint('❌ Error launching link: $e');
+      debugPrint('Error launching link: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Could not open link')),
       );
@@ -73,33 +73,37 @@ class SponsoredCarousel extends ConsumerWidget {
     }
 
     // --- Step 2: Add points + mark as completed ---
-    try {
-      await FirebaseFirestore.instance.runTransaction((transaction) async {
-        final snapshot = await transaction.get(userRef);
-        if (!snapshot.exists) return;
+try {
+  await FirebaseFirestore.instance.runTransaction((transaction) async {
+    final snapshot = await transaction.get(userRef);
+    if (!snapshot.exists) return;
 
-        final currentPoints = snapshot.data()?['pointsEarned'] ?? 0;
-        final updatedList = List<String>.from(
-          snapshot.data()?['completedSponsored'] ?? [],
-        );
+    final currentPoints = snapshot.data()?['pointsEarned'] ?? 0;
+    final updatedList = List<String>.from(
+      snapshot.data()?['completedSponsored'] ?? [],
+    );
 
-        updatedList.add(challengeId);
+    updatedList.add(challengeId);
 
-        transaction.update(userRef, {
-          'pointsEarned': currentPoints + pointsToAward,
-          'completedSponsored': updatedList,
-        });
-      });
+    transaction.update(userRef, {
+      'pointsEarned': currentPoints + pointsToAward,
+      'completedSponsored': updatedList,
+    });
+  });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('✅ You earned $pointsToAward points!')),
-      );
-    } catch (e) {
-      debugPrint('❌ Error updating points: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error adding points')),
-      );
-    }
+  //After transaction, update streak if user earned points today
+  await updateUserStreak(userRef.id);
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('✅ You earned $pointsToAward points!')),
+  );
+} catch (e) {
+  debugPrint('❌ Error updating points: $e');
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(content: Text('Error adding points')),
+  );
+}
+
   }
 
   @override
