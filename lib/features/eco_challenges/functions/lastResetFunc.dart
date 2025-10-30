@@ -17,7 +17,7 @@ Future<void> resetDailyCountersIfNeeded() async {
   // Get "start of today" in local time
   final todayStart = DateTime(now.year, now.month, now.day);
 
-  // Firestore stores timestamps in UTC, so we need to convert them to local
+
   final lastResetUtc = (data?['lastReset'] as Timestamp?)?.toDate();
   final lastResetLocal = lastResetUtc?.toLocal();
 
@@ -27,11 +27,11 @@ Future<void> resetDailyCountersIfNeeded() async {
       'quizzesCompleted': 0,
       'dailyHabitsCompleted': 0,
       'wasteReductionCompleted': 0,
-      'lastReset': Timestamp.fromDate(todayStart.toUtc()), // store UTC equivalent
+      'lastReset': Timestamp.fromDate(todayStart.toUtc()), 
     });
-    debugPrint('✅ Daily counters reset for ${user.uid} (local midnight)');
+    debugPrint('Daily counters reset for ${user.uid} (local midnight)');
   } else {
-    debugPrint('⏩ Counters already up to date for today (local time).');
+    debugPrint('Counters already up to date for today (local time).');
   }
 }
 
