@@ -18,7 +18,6 @@ import 'dart:math';
 import 'package:ecopamoja/admin/features/dashboard/admin_dashboard_content.dart';
 import 'package:ecopamoja/admin/features/dashboard/analytics.dart';
 import 'package:ecopamoja/admin/features/challenges/manage_challenges.dart';
-import 'package:ecopamoja/admin/features/dashboard/manage_store_items.dart';
 import 'package:ecopamoja/admin/features/dashboard/mascot_form.dart';
 import 'package:ecopamoja/admin/features/didyouknow/did_you_know_content.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
@@ -39,7 +38,6 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
 
   final List<String> _title=[
     'Dashboard',
-    'Manage Store Items',
     'Manage Challenges',
     'Analytics',
     'Mascot',
@@ -63,7 +61,6 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
                   if(!isMobile) const VerticalDivider(color: Colors.white70, width: 1, thickness: 1, endIndent: 60,),
                     Expanded(child: IndexedStack(index: _selectedIndex,children: [
                       AdminDashboardContent(),
-                      ManageStoreItems(),
                       ManageChallengesScreen(),
                       AdminAnalytics(),
                       AdminMascotPage(),
@@ -97,11 +94,10 @@ class _AdminDashboardOverviewState extends State<AdminDashboardOverview> {
             ),
             const SizedBox(height: 40),
             _buildNavItem('Dashboard', 0, Icons.dashboard),
-            _buildNavItem('Manage Store Items', 1, Icons.store),
-            _buildNavItem('Manage Challenges', 2, Icons.task),
-            _buildNavItem('Analytics', 3, Icons.analytics),
-            _buildNavItem('Mascot', 4, Icons.pets),
-            _buildNavItem('Did you know', 5, Icons.question_answer)
+            _buildNavItem('Manage Challenges', 1, Icons.task),
+            _buildNavItem('Analytics', 2, Icons.analytics),
+            _buildNavItem('Mascot', 3, Icons.pets),
+            _buildNavItem('Did you know', 4, Icons.question_answer)
           ],
         ),
       ),

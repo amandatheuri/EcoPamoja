@@ -1,4 +1,5 @@
 import 'package:ecopamoja/app.dart';
+import 'package:ecopamoja/features/eco_challenges/functions/lastResetFunc.dart';
 import 'package:ecopamoja/firebase_options.dart';
 import 'package:ecopamoja/platform_check_stub.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +14,11 @@ void main(List<String> args) async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+   //Run reset logic only if user is logged in
+  final user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    await resetDailyCountersIfNeeded();
+  }
 
   final prefs = await SharedPreferences.getInstance();
   final isOnboardingComplete = prefs.getBool('onboarding_completed') ?? false;

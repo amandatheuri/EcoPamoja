@@ -3,56 +3,56 @@ import 'package:ecopamoja/features/authentication/models/user_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final userDocProvider = FutureProvider<DocumentSnapshot>((ref) async {
+final userDocProvider = StreamProvider<DocumentSnapshot>((ref) {
   final uid = FirebaseAuth.instance.currentUser?.uid;
-  if (uid == null) throw Exception('User not logged in');
-
-  final doc = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(uid)
-      .get();
-  if (!doc.exists) {
-    throw Exception('User document does not exist');
+  if (uid == null) {
+    // Return an empty stream if not logged in
+    return const Stream.empty();
   }
 
-  return doc;
+  // Listen to real-time changes
+  return FirebaseFirestore.instance.collection('users').doc(uid).snapshots();
 });
 
 final userDataProvider = Provider<UserData?>((ref) {
   final snapshot = ref.watch(userDocProvider);
+
   return snapshot.when(
     data: (doc) {
+      if (!doc.exists) return null;
       final data = doc.data() as Map<String, dynamic>?;
+
       if (data == null) return null;
+
       return UserData(
-        uid: data['uid'] ?? '',
+        uid: doc.id,
         email: data['email'] ?? '',
         username: data['username'] ?? '',
         photoUrl: data['photoUrl'],
-        createdAt: data['createdAt']?.toDate(),
-        lastActive: data['lastActive']?.toDate(),
+        createdAt:
+            (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+        lastActive:
+            (data['lastActive'] as Timestamp?)?.toDate() ?? DateTime.now(),
+        lastReset:
+            (data['lastReset'] as Timestamp?)?.toDate() ?? DateTime.now(),
         streak: data['streak'] ?? 0,
         isAdmin: data['isAdmin'] ?? false,
-        medalCount: data['medalCount'] ?? 0,
-        trophiesEarned: data['trophiesEarned'] ?? 0,
-        ecoWarrior: data['ecoWarrior'] ?? false,
         quizzesCompleted: data['quizzesCompleted'] ?? 0,
-        actionsCompleted: data['actionsCompleted'] ?? 0,
+        dailyHabitsCompleted: data['actionsCompleted'] ?? 0,
         totalChallengesCompleted: data['totalChallengesCompleted'] ?? 0,
         dailyGoal: data['dailyGoal'] ?? 3,
         todayChallengesCompleted: data['todayChallengesCompleted'] ?? 0,
-        completedChallenges: List<String>.from(
-          data['completedChallenges'] ?? [],
-        ),
         notificationsEnabled: data['notificationsEnabled'] ?? true,
-        preferredCategories: List<String>.from(
-          data['preferredCategories'] ?? [],
-        ),
-        themeMode: data['themeMode'] ?? 'system',
+        badgesEarned: List<String>.from(data['badgesEarned'] ?? []),
+        completedSponsored: List<String>.from(data['completedSponsored'] ?? []),
+        themeMode: data['themeMode'] ?? 'dark',
         hasSeenIntro: data['hasSeenIntro'] ?? false,
+        groupsJoined: data['groupsJoined'] ?? 0,
+        pointsEarned: data['pointsEarned'] ?? 0,
+        wasteReductionCompleted: data['wasteReductionCompleted'] ?? 0,
       );
     },
     loading: () => null,
-    error: (_, _) => null,
+    error: (_, __) => null,
   );
 });

@@ -8,7 +8,7 @@ Step 5: create a button to add new challenges
 */
 import 'package:ecopamoja/admin/features/challenges/forms/action_challenge_form.dart';
 import 'package:ecopamoja/admin/features/challenges/forms/quiz_challenge_form.dart';
-import 'package:ecopamoja/admin/features/challenges/forms/sponsored_action.dart';
+import 'package:ecopamoja/admin/features/challenges/forms/sponsoredform.dart';
 import 'package:ecopamoja/admin/features/widgets/action_challenge.dart';
 import 'package:ecopamoja/admin/features/widgets/action_challenge_type.dart';
 import 'package:ecopamoja/admin/features/widgets/quiz_challenge.dart';
@@ -178,7 +178,7 @@ void _checkScrollOverflow() {
           content = const AddActionChallengeDialog(); 
           break;
         case 'sponsored':
-        content = SponsoredActionChallenge(); 
+        content = SponsoredInputForm(); 
         break;
         default:          
           content = const AddQuizChallengeDialog(); 

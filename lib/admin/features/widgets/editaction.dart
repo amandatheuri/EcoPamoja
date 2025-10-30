@@ -59,7 +59,6 @@ void initState() {
   super.initState();
   _titleController = TextEditingController(text: widget.challenge.title);
   _descriptionController = TextEditingController(text: widget.challenge.description);
-  _dailyLimitController = TextEditingController(text: widget.challenge.dailyLimit.toString());
   _selectedDueDate = widget.challenge.dueDate;
   _selectedIcon = widget.challenge.icon;
 

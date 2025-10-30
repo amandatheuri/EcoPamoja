@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:ecopamoja/features/did_you_know/did_you_know_provider.dart';
+import 'package:ecopamoja/features/home/did_you_know/did_you_know_provider.dart';
 import 'package:ecopamoja/theme_essentials/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +17,7 @@ class DidYouKnowCarousel extends ConsumerWidget {
 
     return factsAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Text('Error: $e'),
+      error: (e, _) => Text('❗Check connection'),
       data: (facts) {
         return CarouselSlider.builder(
           itemCount: facts.length,
@@ -59,14 +59,14 @@ class DidYouKnowCarousel extends ConsumerWidget {
                     const SizedBox(height: 10),
               
                     // Title
-                    Text(
+                    /*Text(
                       'Did you know?',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 8),*/
               
                     // Fact text
                     Expanded(

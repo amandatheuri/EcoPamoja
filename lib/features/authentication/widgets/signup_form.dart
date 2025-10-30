@@ -103,7 +103,7 @@ void _onUsernameChanged() {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Signup successful")),
         );
-        context.go('/home');
+        context.go('/navigation');
       } else {
             print("⚠️ Signup failed");
         ScaffoldMessenger.of(context).showSnackBar(

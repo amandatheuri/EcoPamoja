@@ -62,7 +62,7 @@ class _LoginFormState extends ConsumerState<LoginForm2>{
 
       Future.delayed(Duration(seconds: 2), () {
       Navigator.of(context).pop(); // close the dialog
-      context.go('/home');         // navigate after
+      context.go('/navigation');         // navigate after
         });
       }else{
       showDialog(context: context, builder: (context)=> AlertDialog(
@@ -100,15 +100,18 @@ class _LoginFormState extends ConsumerState<LoginForm2>{
           validator: (val) => val == null || val.length < 6 ? 'Password too short' : null,
           ),
         const SizedBox(height: 16),
-        Row(
-            children: [
-              Checkbox(
-                value: _rememberMe,
-                onChanged: (val) => setState(() => _rememberMe = val!),
-              ),
-              Text("Remember me", style: Theme.of(context).textTheme.bodySmall),
-            ],
-          ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+              children: [
+                Checkbox(
+                  value: _rememberMe,
+                  onChanged: (val) => setState(() => _rememberMe = val!),
+                ),
+                Text("Remember me", style: Theme.of(context).textTheme.bodySmall),
+              ],
+            ),
+        ),
           TextButton(
                 onPressed: () {
                   Navigator.push(

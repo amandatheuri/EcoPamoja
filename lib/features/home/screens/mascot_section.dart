@@ -57,73 +57,86 @@ class MascotSection extends ConsumerWidget {
     );
   }
 
-  Widget _ecoMascotCard(
-    BuildContext context, {
-    required Widget mascot,
-    required int streak,
-    required String message,
-  }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(20),
-       
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Mascot and streak tag
-       Row(
-  mainAxisAlignment: MainAxisAlignment.center,
-  crossAxisAlignment: CrossAxisAlignment.center,
-  children: [
-    // Move mascot slightly to the right
-    Padding(
-      padding: const EdgeInsets.only(right: 1),
-      child: mascot,
+ Widget _ecoMascotCard(
+  BuildContext context, {
+  required Widget mascot,
+  required int streak,
+  required String message,
+}) {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+    decoration: BoxDecoration(
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(20),
     ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // Stack mascot and streak
+        Stack(
+          alignment: Alignment.topRight,
+          children: [
+            // Mascot image
+            Center(child: mascot),
 
-    // Streak Tag stays in place
-    Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.complimentary, width: 1),
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.local_fire_department,
-            color: AppColors.complimentary,
-            size: 16,
-          ),
-          const SizedBox(width: 4),
-          Text(
-            "$streak",
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppColors.complimentary,
+            // Positioned streak badge
+            Positioned(
+              right: 16,
+              top: 30,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.complimentary, width: 1),
+                  boxShadow: [
+                    BoxShadow(
+                      // ignore: deprecated_member_use
+                      color: Colors.black.withOpacity(0.15),
+                      blurRadius: 4,
+                      offset: const Offset(1, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.local_fire_department,
+                      color: AppColors.complimentary,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      "$streak",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.complimentary,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
-      ),
-    ),
-  ],
-),
+          ],
+        ),
 
-          const SizedBox(height: 16),
-          // Firestore message
-          Text(
-            message,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    );
-  }
+        const SizedBox(height: 16),
+
+        // Firestore message
+        Text(
+          message,
+          textAlign: TextAlign.center,
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
+  );
+}
+
 }
 
 

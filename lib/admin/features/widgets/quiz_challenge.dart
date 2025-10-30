@@ -113,14 +113,12 @@ class QuizChallengeManager extends StatelessWidget {
       builder: (context) => EditQuizQuestionDialog(
         question: challenge.questions!.first,
         initialDurationSeconds: challenge.durationSeconds,
-        initialMaxAttemptsPerDay: challenge.dailyLimit,
       ),
     );
 
     if (result != null) {
       final updatedQuestion = result['question'] as QuizQuestion;
       final updatedDuration = result['durationSeconds'] as int?;
-      final updatedLimit = result['maxAttemptsPerDay'] as int?;
 
       final updatedChallenge = ChallengeModel(
         id: challenge.id,
@@ -130,7 +128,6 @@ class QuizChallengeManager extends StatelessWidget {
         createdAt: challenge.createdAt,
         questions: [updatedQuestion],
         durationSeconds: updatedDuration,
-        dailyLimit: updatedLimit,
         dueDate: challenge.dueDate,
         icon: challenge.icon,
         iconCode: challenge.iconCode,
