@@ -28,32 +28,34 @@ class _ManageChallengesScreenState extends State<ManageChallengesScreen> {
   bool _showScrollArrow = false;
 
   int _selectedTab = 0;
-@override
-void initState() {
-  super.initState();
-  _scrollController.addListener(_checkScrollOverflow);
-  WidgetsBinding.instance.addPostFrameCallback((_) => _checkScrollOverflow());
-}
-
-@override
-void dispose() {
-  _scrollController.removeListener(_checkScrollOverflow);
-  _scrollController.dispose();
-  super.dispose();
-}
-void _checkScrollOverflow() {
-  if (!_scrollController.hasClients) return;
-
-  final maxScroll = _scrollController.position.maxScrollExtent;
-  final currentScroll = _scrollController.offset;
-  final isOverflowing = maxScroll > 0 && currentScroll < maxScroll;
-
-  if (_showScrollArrow != isOverflowing) {
-    setState(() {
-      _showScrollArrow = isOverflowing;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_checkScrollOverflow);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkScrollOverflow());
   }
-}
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_checkScrollOverflow);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _checkScrollOverflow() {
+    if (!_scrollController.hasClients) return;
+
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    final isOverflowing = maxScroll > 0 && currentScroll < maxScroll;
+
+    if (_showScrollArrow != isOverflowing) {
+      setState(() {
+        _showScrollArrow = isOverflowing;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveBreakpoints.of(context).smallerThan(TABLET);
@@ -65,58 +67,61 @@ void _checkScrollOverflow() {
           children: [
             if (!isMobile)
               Stack(
-  children: [
-    SingleChildScrollView(
-      controller: _scrollController,
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          _buildToggleButtons(isMobile),
-          const SizedBox(width: 16),
-          _buildAddButton(context, _selectedTab)
-        ],
-      ),
-    ),
-    if (_showScrollArrow)
-      Positioned(
-        right: 5,
-        top: 0,
-        bottom: 0,
-        child: IgnorePointer(
-          child: Container(
-            width: 30,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [Colors.transparent, AppColors.background.withOpacity(0.9)],
+                children: [
+                  SingleChildScrollView(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildToggleButtons(isMobile),
+                        const SizedBox(width: 16),
+                        _buildAddButton(context, _selectedTab),
+                      ],
+                    ),
+                  ),
+                  if (_showScrollArrow)
+                    Positioned(
+                      right: 5,
+                      top: 0,
+                      bottom: 0,
+                      child: IgnorePointer(
+                        child: Container(
+                          width: 30,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Colors.transparent,
+                                AppColors.background.withOpacity(0.9),
+                              ],
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
-            ),
-            child: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.white),
-          ),
-        ),
-      ),
-  ],
-),
 
             if (isMobile)
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          _buildToggleButtons(isMobile),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: _buildAddButton(context, _selectedTab),
-                      ),
-                    ],
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(children: [_buildToggleButtons(isMobile)]),
+                    const SizedBox(height: 16),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: _buildAddButton(context, _selectedTab),
+                    ),
+                  ],
+                ),
               ),
             const SizedBox(height: 16),
             Expanded(
@@ -159,56 +164,53 @@ void _checkScrollOverflow() {
     );
   }
 
- Widget _buildAddButton(BuildContext context, int selectedTab) {
-  return ElevatedButton(
-    onPressed: () async {
-  final selectedType = await showDialog<String>(
-    context: context,
-    builder: (context) => ActionChallengeType(), 
-  );
+  Widget _buildAddButton(BuildContext context, int selectedTab) {
+    return ElevatedButton(
+      onPressed: () async {
+        final selectedType = await showDialog<String>(
+          context: context,
+          builder: (context) => ActionChallengeType(),
+        );
 
-  if (selectedType == null) return;
+        if (selectedType == null) return;
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      Widget content;
-      switch (selectedType) {
-        case 'normal':
-          content = const AddActionChallengeDialog(); 
-          break;
-        case 'sponsored':
-        content = SponsoredInputForm(); 
-        break;
-        default:          
-          content = const AddQuizChallengeDialog(); 
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            Widget content;
+            switch (selectedType) {
+              case 'normal':
+                content = const AddActionChallengeDialog();
+                break;
+              case 'sponsored':
+                content = SponsoredInputForm();
+                break;
+              default:
+                content = const AddQuizChallengeDialog();
+            }
 
-      }
+            return AlertDialog(
+              contentPadding: const EdgeInsets.all(14),
+              content: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.7,
+                  maxWidth: MediaQuery.of(context).size.width * 0.6,
+                ),
+                child: content,
+              ),
+            );
+          },
+        );
+      },
 
-      return AlertDialog(
-        contentPadding: const EdgeInsets.all(14),
-        content: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height*0.7,
-            maxWidth: MediaQuery.of(context).size.width*0.6,
-          ),
-          child:content
-          ),
-      );
-    },
-  );
-},
-
-    style: ElevatedButton.styleFrom(
-      shape: const CircleBorder(
-        side: BorderSide(color: AppColors.primary, width: 2),
+      style: ElevatedButton.styleFrom(
+        shape: const CircleBorder(
+          side: BorderSide(color: AppColors.primary, width: 2),
+        ),
+        padding: const EdgeInsets.all(12),
+        backgroundColor: AppColors.primary,
       ),
-      padding: const EdgeInsets.all(12),
-      backgroundColor: AppColors.primary,
-    ),
-    child: const Icon(Icons.add, color: Colors.white),
-  );
-}
-
-
+      child: const Icon(Icons.add, color: Colors.white),
+    );
+  }
 }

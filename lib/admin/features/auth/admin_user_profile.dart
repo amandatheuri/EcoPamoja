@@ -1,9 +1,11 @@
 import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../features/authentication/controllers/auth_controller.dart';
 import '../../../features/authentication/providers/user_provider.dart';
 import '../../../theme_essentials/colors.dart';
+import '../widgets/user_details.dart';
 
 class AdminUserProfile extends ConsumerWidget {
   const AdminUserProfile({super.key});
@@ -42,7 +44,6 @@ class AdminUserProfile extends ConsumerWidget {
                             backgroundImage: NetworkImage(user?.photoUrl ?? ''),
                           ),
                         ),
-
                         const SizedBox(height: 20),
 
                         // user details
@@ -111,64 +112,24 @@ class AdminUserProfile extends ConsumerWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Column(
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Created at",
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodySmall,
-                                  ),
-                                  Text(
-                                    user!.createdAt.toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(fontStyle: FontStyle.italic),
-                                  ),
-                                ],
+                              UserDetailsRow(
+                                detailTitle: "Created at:",
+                                detailData: user?.createdAt.toString(),
                               ),
                               const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Last active",
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodySmall,
-                                  ),
-                                  Text(
-                                    user.lastActive.toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(fontStyle: FontStyle.italic),
-                                  ),
-                                ],
+                              UserDetailsRow(
+                                detailTitle: "Last active:",
+                                detailData: user?.lastActive.toString(),
                               ),
                               const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Streak",
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodySmall,
-                                  ),
-                                  Text(
-                                    user.streak.toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(fontStyle: FontStyle.italic),
-                                  ),
-                                ],
+                              UserDetailsRow(
+                                detailTitle: "Streak",
+                                detailData: user?.streak.toString(),
+                              ),
+                              const SizedBox(height: 10),
+                              UserDetailsRow(
+                                detailTitle: "Total points",
+                                detailData: user?.pointsEarned.toString(),
                               ),
                               const SizedBox(height: 10),
                             ],
@@ -185,7 +146,11 @@ class AdminUserProfile extends ConsumerWidget {
               child: Align(
                 alignment: Alignment.center,
                 child: ElevatedButton(
-                  onPressed: authController.signOut,
+                  onPressed: () async {
+                    print("Signing out...");
+                    await authController.signOut();
+                    context.go('/sign-up');
+                  },
                   child: const Text(
                     "Log out",
                     style: TextStyle(

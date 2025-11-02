@@ -8,31 +8,31 @@ class LoginPrompt2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-      Expanded(
-        child: Text(
-          'Don\'t have an account?',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            fontSize: 13,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            'Don\'t have an account?',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+            ),
           ),
         ),
-      ),
-          
-          Expanded(
-            child: TextButton(
-              onPressed: () => context.push('/signup'),
-              child: Text(
-                'Sign up',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontSize: 14.0,
-                  color: AppColors.primary,
-                ),
+
+        Expanded(
+          child: TextButton(
+            onPressed: () => context.push('/signup'),
+            child: Text(
+              'Sign up',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontSize: 14.0,
+                color: AppColors.primary,
               ),
             ),
           ),
-        ],
+        ),
+      ],
     );
   }
 }

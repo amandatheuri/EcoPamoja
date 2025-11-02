@@ -4,6 +4,8 @@ import 'package:riverpod/riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../rewards/logic.dart';
+
 final authControllerProvider = Provider((ref) => AuthController());
 
 class AuthController {
@@ -15,13 +17,9 @@ class AuthController {
   Future<User?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      print('🔵 googleUser: $googleUser');
       if (googleUser == null) return null;
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
-      print(
-        '🟢 googleAuth: accessToken=${googleAuth.accessToken}, idToken=${googleAuth.idToken}',
-      );
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -36,6 +34,7 @@ class AuthController {
             .get();
 
         if (!userDoc.exists) {
+          // For new users, set initial points and badge
           await _firestore.collection('users').doc(user.uid).set({
             'email': user.email ?? '',
             'username': user.displayName ?? 'Anonymous',
@@ -45,7 +44,7 @@ class AuthController {
             'lastReset': DateTime.now(),
             'streak': 0,
             'isAdmin': false,
-            'badgesEarned': [],
+            'badgesEarned': [BadgeCategories.firstStep.toString()], // UPDATED
             'completedSponsored': [],
             'quizzesCompleted': 0,
             'dailyHabitsCompleted': 0,
@@ -57,12 +56,11 @@ class AuthController {
             'themeMode': 'dark',
             'hasSeenIntro': false,
             'groupsJoined': 0,
-            'pointsEarned': 0,
+            'pointsEarned': 50, // UPDATED
           });
         }
       }
 
-      print('🟡 userCredential: ${userCredential.user}');
       return userCredential.user;
     } catch (e) {
       print('🔴 Google Sign-In error: $e');
@@ -129,18 +127,18 @@ class AuthController {
       );
       final user = userCredential.user;
       if (user == null) return null;
-      // Save user to Firestore
+      // Save user to Firestore with initial rewards
       await _firestore.collection('users').doc(userCredential.user!.uid).set({
         'email': user.email ?? '',
-        'username': user.displayName ?? 'Anonymous',
+        'username': username, // FIXED (was user.displayName)
         'photoUrl': user.photoURL,
         'createdAt': DateTime.now(),
         'lastActive': DateTime.now(),
         'lastReset': DateTime.now(),
         'streak': 0,
         'isAdmin': false,
-        'badgesEarned': [],
-        'completedSponsored': [], // ✅ important
+        'badgesEarned': [BadgeCategories.firstStep.toString()], // UPDATED
+        'completedSponsored': [],
         'quizzesCompleted': 0,
         'dailyHabitsCompleted': 0,
         'wasteReductionCompleted': 0,
@@ -151,7 +149,7 @@ class AuthController {
         'themeMode': 'dark',
         'hasSeenIntro': false,
         'groupsJoined': 0,
-        'pointsEarned': 0,
+        'pointsEarned': 50, // UPDATED
       });
 
       return userCredential.user;

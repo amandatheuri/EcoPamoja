@@ -8,7 +8,7 @@ class LoginPrompt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
           'Don\'t have an account?',
@@ -18,15 +18,13 @@ class LoginPrompt extends StatelessWidget {
           ),
         ),
 
-        Expanded(
-          child: TextButton(
-            onPressed: () => context.push('/signup'),
-            child: Text(
-              'Create Account',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontSize: 14.0,
-                color: AppColors.primary,
-              ),
+        TextButton(
+          onPressed: () => context.push('/signup'),
+          child: Text(
+            'Create Account',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              fontSize: 14.0,
+              color: AppColors.primary,
             ),
           ),
         ),
