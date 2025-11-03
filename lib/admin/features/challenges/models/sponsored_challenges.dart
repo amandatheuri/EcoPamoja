@@ -12,6 +12,7 @@ class SponsoredChallengesModel {
   final String brandImageLink;
   final Timestamp dueDate;
   final DateTime createdAt;
+  final int pointsToAward;
  
   SponsoredChallengesModel({
     required this.id,
@@ -23,7 +24,7 @@ class SponsoredChallengesModel {
     required this.brandImageLink,
     required this.dueDate,
     required this.createdAt,
-   
+    required this.pointsToAward,
   });
 
   factory SponsoredChallengesModel.fromDoc(DocumentSnapshot doc) {
@@ -38,8 +39,10 @@ class SponsoredChallengesModel {
       brandImageLink: data['brandImage']?? '',
       dueDate: data['dueDate'] ?? Timestamp.now(),
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      pointsToAward: data['pointsEarned']?? 0,
     );
   }
+
 static SponsoredChallengesModel fromFirestore(Map<String, dynamic> doc, {String id = ''}) {
   return SponsoredChallengesModel(
     id: id,
@@ -51,7 +54,7 @@ static SponsoredChallengesModel fromFirestore(Map<String, dynamic> doc, {String 
     brandImageLink: doc['brandImage']?? '',
     dueDate: doc['dueDate'] ?? Timestamp.now(),
     createdAt: (doc['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+    pointsToAward: doc['pointsEarned']?? 0,
   );
 }
-
 }

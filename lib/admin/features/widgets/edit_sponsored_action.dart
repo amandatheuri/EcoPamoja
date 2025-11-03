@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:ecopamoja/admin/features/challenges/models/sponsored_challenges.dart';
-import 'package:ecopamoja/admin/features/widgets/fetch_logos.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EditSponsoredChallengeDialog extends StatefulWidget {
@@ -18,11 +17,13 @@ class EditSponsoredChallengeDialog extends StatefulWidget {
 class _EditSponsoredChallengeDialogState extends State<EditSponsoredChallengeDialog> {
   final _formKey = GlobalKey<FormState>();
   final _imageUrl = TextEditingController();
+  final _brandName = TextEditingController();
+  final _points =TextEditingController();
+  final _logo =TextEditingController();
   final _descriptionController = TextEditingController();
   final _partnerStoreLinkController = TextEditingController();
   final _dueDateController = TextEditingController();
   DateTime? _selectedDueDate;
-  String? _selectedLogo;
   bool _isSubmitting = false;
 
   List<Map<String, dynamic>> availableLogos = [];
@@ -32,13 +33,13 @@ class _EditSponsoredChallengeDialogState extends State<EditSponsoredChallengeDia
     super.initState();
     final challenge = widget.challenge;
     _imageUrl.text = challenge.brandImageLink;
+    _logo.text = challenge.partnerLogoKey;
+    _brandName.text = challenge.partnerName;
     _descriptionController.text = challenge.description;
     _partnerStoreLinkController.text = challenge.storeLink;
     _selectedDueDate = challenge.dueDate.toDate();
+    _points.text = challenge.pointsToAward.toString();
     _dueDateController.text = DateFormat('MMM dd, yyyy hh:mm a').format(_selectedDueDate!);
-    _selectedLogo = challenge.partnerLogoKey;
-
-    fetchLogos().then((logos) => setState(() => availableLogos = logos));
   }
 
   Future<void> _pickDueDateTime() async {
@@ -63,21 +64,21 @@ class _EditSponsoredChallengeDialogState extends State<EditSponsoredChallengeDia
     setState(() => _isSubmitting = true);
 
     try {
-      final logo = availableLogos.firstWhere((logo) => logo['key'] == _selectedLogo);
 
       await FirebaseFirestore.instance.collection('sponsored_challenges').doc(widget.challenge.id).update({
         'brandImage': _imageUrl.text.trim(),
         'description': _descriptionController.text.trim(),
         'storeLink': _partnerStoreLinkController.text.trim(),
         'dueDate': _selectedDueDate,
-        'partnerLogoKey': _selectedLogo,
-        'partnerName': logo['name'],
+        'partnerLogoKey': _logo,
+        'partnerName': _brandName,
+        'pointsToAward': int.tryParse(_points.text.trim()) ?? 0,
       });
 
       if (mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('✅ Sponsored challenge updated')),
+          const SnackBar(content: Text('Sponsored challenge updated')),
         );
       }
     } catch (e) {
@@ -118,9 +119,10 @@ class _EditSponsoredChallengeDialogState extends State<EditSponsoredChallengeDia
   AppValidators.validateUrl(value);
   return null;
   },),
+                _buildField('brand name', _brandName, maxLines: 3),
+              _buildField('points to award', _points, maxLines: 1),
               _buildField('Description', _descriptionController, maxLines: 3),
-               _buildField(
-  'Partner Store Link',
+               _buildField('Partner Store Link',
   _partnerStoreLinkController,
   inputType: TextInputType.url,
   validator: (value) {
@@ -129,6 +131,7 @@ class _EditSponsoredChallengeDialogState extends State<EditSponsoredChallengeDia
   },
 ),
 const SizedBox(height: 10),
+//preview link
 if (_partnerStoreLinkController.text.trim().isNotEmpty)
   Align(
     alignment: Alignment.centerLeft,
@@ -155,27 +158,11 @@ if (_partnerStoreLinkController.text.trim().isNotEmpty)
                   child: _buildField('Due Date & Time', _dueDateController, inputType: TextInputType.datetime),
                 ),
               ),
-                          const SizedBox(height: 10),
-              DropdownButtonFormField<String>(
-                value: _selectedLogo,
-                decoration: const InputDecoration(labelText: 'Select Partner Logo'),
-                items: availableLogos.map((logo) {
-                  return DropdownMenuItem<String>(
-                    value: logo['key'],
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage('https://amandatheuri.github.io/ecopamoja-assets/logos/${logo['key']}'),
-                          radius: 12,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(logo['name']),
-                      ],
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) => setState(() => _selectedLogo = value),
-              ),
+                const SizedBox(height: 10),
+ _buildField('brand logo', _logo, validator: (value) {
+  AppValidators.validateUrl(value);
+  return null;
+  },),
             ],
           ),
         ),

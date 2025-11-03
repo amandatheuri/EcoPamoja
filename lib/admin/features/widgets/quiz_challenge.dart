@@ -129,9 +129,6 @@ class QuizChallengeManager extends StatelessWidget {
         questions: [updatedQuestion],
         durationSeconds: updatedDuration,
         dueDate: challenge.dueDate,
-        icon: challenge.icon,
-        iconCode: challenge.iconCode,
-        iconFontFamily: challenge.iconFontFamily,
       );
 
       await ChallengeService.updateChallenge(updatedChallenge);

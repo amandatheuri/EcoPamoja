@@ -33,8 +33,6 @@ class _SponsoredFormState extends State<SponsoredInputForm> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _selectedDueDate;
   final bool _isSubmitting = false;
-  List<Map<String, dynamic>> availableLogos = [];
-  List<Map<String, dynamic>> filteredLogos = [];
 
 //picking expiry date logic
   Future<void> _pickDueDateTime() async {
@@ -110,15 +108,46 @@ TextFormField(
                         }    
                         ), 
                SizedBox(height: 10),
-               _buildField('Brand Name', _brandName, maxLines: 3, hintText: ''),
-               SizedBox(height: 10),
-              _buildField('Description', _description, maxLines: 3, hintText: 'Short description'),
-               SizedBox(height: 10),
-              _buildField('store link url', _url,  inputType: TextInputType.url,hintText: 'https://example.com/brand_image.png',
-                        validator: (value) {
+ TextFormField(
+      controller: _brandName,
+      keyboardType: TextInputType.name,
+      decoration: const InputDecoration(
+        labelText: 'Input brand name',
+        border: OutlineInputBorder(),
+        hintText: 'GoGreen Kenya',
+      ),
+              validator: (value) {
                           AppValidators.validateUrl(value);
                           return null;
-                        },),
+                        }    
+                        ), 
+               SizedBox(height: 10),
+ TextFormField(
+      controller: _description,
+      keyboardType: TextInputType.text,
+      decoration: const InputDecoration(
+        labelText: 'Describe the action',
+        border: OutlineInputBorder(),
+        hintText: 'Attend go green event for extra eco points',
+      ),
+              validator: (value) {
+                          AppValidators.validateUrl(value);
+                          return null;
+                        }    
+                        ),                SizedBox(height: 10),
+ TextFormField(
+      controller: _url,
+      keyboardType: TextInputType.url,
+      decoration: const InputDecoration(
+        labelText: 'Input store link',
+        border: OutlineInputBorder(),
+        hintText: 'https://example.com/',
+      ),
+              validator: (value) {
+                          AppValidators.validateUrl(value);
+                          return null;
+                        }    
+                        ),               
                          if (_url.text.trim().isNotEmpty)
                         Align(
                           alignment: Alignment.centerLeft,
@@ -152,8 +181,20 @@ TextFormField(
                         ),
                       ),
                SizedBox(height: 10),
-              _buildField('points to award', _points, hintText: '15'),
-               const SizedBox(height: 16),
+ TextFormField(
+      controller: _points,
+      keyboardType: TextInputType.number,
+      decoration: const InputDecoration(
+        labelText: 'Points to award',
+        border: OutlineInputBorder(),
+        hintText: 'strictly 15',
+      ),
+              validator: (value) {
+                          AppValidators.validateUrl(value);
+                          return null;
+                        }    
+                        ),                
+                        const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -180,7 +221,7 @@ TextFormField(
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('⚠️ Please fill all required fields.'),
+          content: Text('Please fill all required fields.'),
           backgroundColor: Colors.orange,
         ),
       );
@@ -190,7 +231,7 @@ TextFormField(
     try {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('⏳ Submitting challenge...'),
+          content: Text('Submitting challenge...'),
           backgroundColor: AppColors.turqoise,
         ),
       );
@@ -211,7 +252,7 @@ TextFormField(
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('✅ Sponsored challenge added successfully!'),
+            content: Text('Sponsored challenge added successfully!'),
             backgroundColor: Colors.green,
           ),
         );
@@ -220,7 +261,7 @@ TextFormField(
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('❌ Error: ${e.toString()}'),
+            content: Text('Error: ${e.toString()}'),
             backgroundColor: Colors.redAccent,
           ),
         );

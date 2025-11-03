@@ -55,14 +55,6 @@ class RegularActionChallengeCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Icon(
-                IconData(challenge.iconCode ?? 0, fontFamily: challenge.iconFontFamily),
-                size: 25,
-                color: getColorByIconName(challenge.icon),
-              ),
-            ),
-            const SizedBox(height: 8),
             Text(challenge.title, style: Theme.of(context).textTheme.bodyLarge),
             const SizedBox(height: 4),
             Text(challenge.description, maxLines: 2, overflow: TextOverflow.ellipsis),

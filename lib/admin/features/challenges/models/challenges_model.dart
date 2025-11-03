@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum ChallengeType { quiz, action, Regular }
+enum ChallengeType { quiz, dailyHabits, wasteReduction }
 
 class ChallengeModel {
   final String id;
@@ -11,9 +11,6 @@ class ChallengeModel {
   final ChallengeType type;
   final DateTime createdAt;
   final List<QuizQuestion>? questions;
-  final int? iconCode;
-  final String? iconFontFamily;
-  final String? icon;
   final int? durationSeconds; // NEW
   final DateTime? dueDate; // NEW
 
@@ -24,9 +21,6 @@ class ChallengeModel {
     required this.type,
     required this.createdAt,
     this.questions,
-    this.iconCode,
-    this.iconFontFamily,
-    this.icon,
     this.durationSeconds,
     this.dueDate,
   });
@@ -38,16 +32,17 @@ class ChallengeModel {
       id: doc.id,
       title: data['title'] ?? '',
       description: data['description'] ?? '',
-      type: data['type'] == 'quiz' ? ChallengeType.quiz : ChallengeType.action,
+      type: data['type'] == 'quiz'
+          ? ChallengeType.quiz
+          : data['type'] == 'dailyHabits'
+              ? ChallengeType.dailyHabits
+              : ChallengeType.wasteReduction,
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       questions: data['questions'] != null
           ? (data['questions'] as List)
               .map((q) => QuizQuestion.fromMap(q as Map<String, dynamic>))
               .toList()
           : null,
-      iconCode: data['iconCode'],
-      iconFontFamily: data['iconFontFamily'],
-      icon: data['icon'],
       durationSeconds: data['durationSeconds'],
       dueDate: data['dueDate'] != null ? (data['dueDate'] as Timestamp).toDate() : null,
     );
@@ -61,9 +56,6 @@ class ChallengeModel {
       'createdAt': Timestamp.fromDate(createdAt),
       if (questions != null)
         'questions': questions!.map((q) => q.toMap()).toList(),
-      'iconCode': iconCode,
-      'iconFontFamily': iconFontFamily,
-      'icon': icon,
       'durationSeconds': durationSeconds,
       'dueDate': dueDate != null ? Timestamp.fromDate(dueDate!) : null,
     };

@@ -45,7 +45,6 @@ class ActionChallengesPage extends StatelessWidget {
                                     : width >= 600
                                         ? 2
                                         : 1;
-
                             return GridView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -75,9 +74,8 @@ class ActionChallengesPage extends StatelessWidget {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     }
-
                     final challenges = snapshot.data ?? [];
-                    final regular = challenges.where((c) => c.type == ChallengeType.action).toList();
+                    final regular = challenges.where((c) => c.type == ChallengeType.dailyHabits).toList();
                     if (regular.isEmpty) return const Text('No regular action challenges found.');
 
                     return Column(
