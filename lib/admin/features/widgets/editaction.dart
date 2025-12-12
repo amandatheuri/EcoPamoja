@@ -16,14 +16,15 @@ class EditActionChallengeDialog extends StatefulWidget {
 class _EditActionChallengeDialogState extends State<EditActionChallengeDialog> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _descriptionController;
-  late TextEditingController _dailyLimitController;
-
+  late TextEditingController _points;
   late DateTime? _selectedDueDate;
   bool _isSubmitting = false;
+
  @override
 void initState() {
   super.initState();
   _descriptionController = TextEditingController(text: widget.challenge.description);
+  _points = TextEditingController(text: widget.challenge.points.toString());
   _selectedDueDate = widget.challenge.dueDate;
 
  
@@ -40,7 +41,7 @@ void initState() {
           .doc(widget.challenge.id)
           .update({
         'description': _descriptionController.text.trim(),
-        'daily_limit': int.parse(_dailyLimitController.text),
+        'points': int.parse(_points.text),
         'dueDate': _selectedDueDate,
       });
 
@@ -59,7 +60,6 @@ void initState() {
     }
   }
 
-  // reuse _buildField, _pickDueDateTime from your Add dialog...
 
  @override
 Widget build(BuildContext context) {
@@ -72,13 +72,10 @@ Widget build(BuildContext context) {
           children: [
             const SizedBox(height: 10),
             _buildField('Description', _descriptionController, maxLines: 3),
-                        const SizedBox(height: 10),
-            _buildField('Daily Limit', _dailyLimitController, inputType: TextInputType.number),
-
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             _buildDueDatePicker(),
-
             const SizedBox(height: 12),
+            _buildField('Points To Award', _points, maxLines: 1),
           ],
         ),
       ),

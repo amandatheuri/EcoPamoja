@@ -68,52 +68,122 @@ class ActionChallengesPage extends StatelessWidget {
                 ),
 
                 /// Regular Action Challenges
-                StreamBuilder<List<ChallengeModel>>(
-                  stream: ChallengeService.getAllChallenges(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    final challenges = snapshot.data ?? [];
-                    final regular = challenges.where((c) => c.type == ChallengeType.dailyHabits).toList();
-                    if (regular.isEmpty) return const Text('No regular action challenges found.');
+/// Regular Action Challenges
+StreamBuilder<List<ChallengeModel>>(
+  stream: ChallengeService.getAllChallenges(),
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text('Regular Action Challenges', style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 8),
-                        LayoutBuilder(
-                          builder: (context, constraints) {
-                            final width = constraints.maxWidth;
-                            final crossAxisCount = width >= 1200
-                                ? 4
-                                : width >= 900
-                                    ? 3
-                                    : width >= 600
-                                        ? 2
-                                        : 1;
+    final challenges = snapshot.data ?? [];
+    final dailyHabits = challenges
+    .where((c) => c.type == ChallengeType.dailyHabits)
+    .toList();
 
-                            return GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: crossAxisCount,
-                                crossAxisSpacing: 12,
-                                mainAxisSpacing: 12,
-                                childAspectRatio: 1.4,
-                              ),
-                              itemCount: regular.length,
-                              itemBuilder: (context, index) {
-                                return RegularActionChallengeCard(challenge: regular[index]);
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  },
+    final wasteReduction = challenges
+    .where((c) => c.type == ChallengeType.wasteReduction)
+    .toList();
+
+    if (dailyHabits.isEmpty && wasteReduction.isEmpty) {
+      return const Text('No action challenges found.');
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Regular Action Challenges',
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+
+        /// Daily Habits Section
+        if (dailyHabits.isNotEmpty) ...[
+          Text(
+            'Daily Habits',
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
+              final crossAxisCount = width >= 1200
+                  ? 4
+                  : width >= 900
+                      ? 3
+                      : width >= 600
+                          ? 2
+                          : 1;
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 1.4,
                 ),
+                itemCount: dailyHabits.length,
+                itemBuilder: (context, index) {
+                  return RegularActionChallengeCard(
+                      challenge: dailyHabits[index]);
+                },
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+        ],
+
+        /// Waste Reduction Section
+        if (wasteReduction.isNotEmpty) ...[
+          Text(
+            'Waste Reduction',
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
+              final crossAxisCount = width >= 1200
+                  ? 4
+                  : width >= 900
+                      ? 3
+                      : width >= 600
+                          ? 2
+                          : 1;
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 1.4,
+                ),
+                itemCount: wasteReduction.length,
+                itemBuilder: (context, index) {
+                  return RegularActionChallengeCard(
+                      challenge: wasteReduction[index]);
+                },
+              );
+            },
+          ),
+        ],
+      ],
+    );
+  },
+),
+
               ],
             ),
           ),

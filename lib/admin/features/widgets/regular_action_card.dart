@@ -10,41 +10,6 @@ class RegularActionChallengeCard extends StatelessWidget {
   final ChallengeModel challenge;
   const RegularActionChallengeCard({super.key, required this.challenge});
 
-  Color getColorByIconName(String? name) {
-    switch (name) {
-      case 'Nature': return Colors.green.shade700;
-    case 'Recycle': return Colors.green;
-    case 'Eco': return Colors.teal;
-    case 'Park': return Colors.green.shade600;
-    case 'Bike': return Colors.deepPurple;
-    case 'Water': return Colors.blue;
-    case 'Energy': return Colors.amber;
-    case 'Clean': return Colors.orangeAccent;
-    case 'Leaf': return Colors.lightGreen;
-    case 'Tree': return Colors.green.shade800;
-    case 'Lightbulb': return Colors.yellow.shade700;
-    case 'Compost': return Colors.brown.shade400;
-    case 'Air': return Colors.cyan;
-    case 'Garden': return Colors.green.shade400;
-    case 'Electric Car': return Colors.indigo;
-    case 'Solar Power': return Colors.orange;
-    case 'Wind Power': return Colors.lightBlueAccent;
-    case 'Fireplace': return Colors.redAccent;
-    case 'Trash': return Colors.grey;
-    case 'Cloud': return Colors.blueGrey;
-    case 'Flower': return Colors.pinkAccent;
-    case 'Hand Wash': return Colors.lightBlue;
-    case 'Plant': return Colors.greenAccent;
-    case 'Globe': return Colors.blue.shade800;
-    case 'Heart': return Colors.red;
-    case 'Shield': return Colors.blueGrey.shade700;
-    case 'Star': return Colors.amber;
-    case 'Check Circle': return Colors.green.shade500;
-    case 'Warning': return Colors.deepOrange;
-    default: return Colors.grey;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -55,8 +20,6 @@ class RegularActionChallengeCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(challenge.title, style: Theme.of(context).textTheme.bodyLarge),
-            const SizedBox(height: 4),
             Text(challenge.description, maxLines: 2, overflow: TextOverflow.ellipsis),
             const Spacer(),
             Row(

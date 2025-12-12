@@ -16,7 +16,7 @@ daily habits- colors.dart: complimentary, icon: leaf
 waste reduction- colors.dart: turqoise, icon: trash can 
 */
 import 'package:ecopamoja/features/eco_challenges/providers/fetchdata_provider.dart';
-import 'package:ecopamoja/features/eco_challenges/screens/quizdisplay.dart';
+import 'package:ecopamoja/features/eco_challenges/screens/quizprogress.dart';
 import 'package:ecopamoja/features/eco_challenges/screens/sponsored.dart';
 import 'package:ecopamoja/shared_components/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';

@@ -11,8 +11,9 @@ class ChallengeModel {
   final ChallengeType type;
   final DateTime createdAt;
   final List<QuizQuestion>? questions;
-  final int? durationSeconds; // NEW
-  final DateTime? dueDate; // NEW
+  final int? durationSeconds; 
+  final DateTime? dueDate; 
+  final int points;
 
   ChallengeModel({
     required this.id,
@@ -20,6 +21,7 @@ class ChallengeModel {
     required this.description,
     required this.type,
     required this.createdAt,
+    required this.points,
     this.questions,
     this.durationSeconds,
     this.dueDate,
@@ -45,6 +47,7 @@ class ChallengeModel {
           : null,
       durationSeconds: data['durationSeconds'],
       dueDate: data['dueDate'] != null ? (data['dueDate'] as Timestamp).toDate() : null,
+      points: data['points']?? 0,
     );
   }
 
@@ -58,6 +61,7 @@ class ChallengeModel {
         'questions': questions!.map((q) => q.toMap()).toList(),
       'durationSeconds': durationSeconds,
       'dueDate': dueDate != null ? Timestamp.fromDate(dueDate!) : null,
+      'points': points,
     };
   }
 }
