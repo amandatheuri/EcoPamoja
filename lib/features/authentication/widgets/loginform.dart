@@ -60,7 +60,7 @@ class _LoginFormState extends ConsumerState<LoginForm>{
       );
       Future.delayed(Duration(seconds: 2), () {
       Navigator.of(context).pop(); // close the dialog
-      context.go('/navigation');         // navigate after
+      context.go('/home');         // navigate after
         });
       }else{
       showDialog(context: context, builder: (context)=> AlertDialog(

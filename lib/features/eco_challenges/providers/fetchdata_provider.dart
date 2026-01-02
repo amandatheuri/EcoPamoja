@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_function_declarations_over_variables, use_function_type_syntax_for_parameters
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecopamoja/admin/features/challenges/models/challenges_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -58,3 +61,18 @@ final newChallengesProvider = FutureProvider<int>((ref) async {
     rethrow;
   }
 });
+
+// FutureProvider for dailyhabits challenges 
+final dailyHabitsProvider = StreamProvider.autoDispose<List<ChallengeModel>>((ref){
+final firestore = FirebaseFirestore.instance;
+return firestore
+.collection('challenges')
+.where('type', isEqualTo: 'dailyHabits')
+.snapshots()
+.map((snapshot){
+  return snapshot.docs
+  .map((doc)=>ChallengeModel.fromFirestore(doc))
+  .toList();
+});
+});
+

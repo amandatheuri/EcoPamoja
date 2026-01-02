@@ -31,7 +31,7 @@ final userDataProvider = Provider<UserData?>((ref) {
         uid: doc.id,
         email: data['email'] ?? '',
         username: data['username'] ?? '',
-        photoUrl: data['photoUrl'],
+        photoUrl: data['photoUrl']?? '',
         createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
         lastActive: (data['lastActive'] as Timestamp?)?.toDate() ?? DateTime.now(),
         lastReset: (data['lastReset'] as Timestamp?)?.toDate() ?? DateTime.now(),
@@ -50,6 +50,9 @@ final userDataProvider = Provider<UserData?>((ref) {
         groupsJoined: data['groupsJoined'] ?? 0,
         pointsEarned: data['pointsEarned'] ?? 0,
         wasteReductionCompleted: data['wasteReductionCompleted'] ?? 0,
+        lastChallengeType: (data['lastChallengeType'] as List<dynamic>?)
+        ?.map((e) => e.toString())
+        .toList() ?? [],
       );
     },
     loading: () => null,

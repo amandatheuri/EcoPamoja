@@ -32,8 +32,8 @@ if (user != null) {
   if (!userDoc.exists) {
     await _firestore.collection('users').doc(user.uid).set({
   'email': user.email ?? '',
-  'username': user.displayName ?? 'Anonymous',
-  'photoUrl': user.photoURL,  
+  'username': user.displayName?? '...',
+  'photoUrl': user.photoURL??'',  
   'createdAt': DateTime.now(),
   'lastActive': DateTime.now(),
   'lastReset': DateTime.now(),
@@ -52,6 +52,7 @@ if (user != null) {
   'hasSeenIntro': false,
   'groupsJoined': 0,
   'pointsEarned': 0,
+  'lastChallengeType':[],
     });
   }
 }
@@ -123,15 +124,15 @@ final user = userCredential.user;
     // Save user to Firestore
    await _firestore.collection('users').doc(userCredential.user!.uid).set({
   'email': user.email ?? '',
-  'username': user.displayName ?? 'Anonymous',
-  'photoUrl': user.photoURL,
+  'username': username,
+  'photoUrl': user.photoURL ?? '',
   'createdAt': DateTime.now(),
   'lastActive': DateTime.now(),
   'lastReset': DateTime.now(),
   'streak': 0,
   'isAdmin': false,
   'badgesEarned': [],
-  'completedSponsored': [], // ✅ important
+  'completedSponsored': [], 
   'quizzesCompleted': 0,
   'dailyHabitsCompleted': 0,
   'wasteReductionCompleted': 0,
@@ -143,6 +144,7 @@ final user = userCredential.user;
   'hasSeenIntro': false,
   'groupsJoined': 0,
   'pointsEarned': 0,
+  'lastChallengeType': <String>[]
 });
 
 

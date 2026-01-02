@@ -19,7 +19,7 @@ class ContinueWith extends ConsumerWidget {
           backgroundColor: AppColors.primary,
         ),
       );
-      context.go('/navigation');
+      context.go('/home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

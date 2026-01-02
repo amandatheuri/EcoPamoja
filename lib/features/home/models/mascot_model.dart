@@ -1,9 +1,10 @@
 class MascotState {
-  final String? id; // <-- Optional Firestore document ID
+  final String? id;
   final int minDaysInactive;
   final int maxDaysInactive;
   final String message;
   final String image;
+  final List<String>? challengeTypes; // e.g., ['sponsored', 'quiz', 'dailyHabits']
 
   MascotState({
     this.id,
@@ -11,6 +12,7 @@ class MascotState {
     required this.maxDaysInactive,
     required this.message,
     required this.image,
+    this.challengeTypes,
   });
 
   factory MascotState.fromMap(Map<String, dynamic> map, {String? id}) {
@@ -20,6 +22,9 @@ class MascotState {
       maxDaysInactive: map['maxDaysInactive'],
       message: map['message'],
       image: map['image'],
+      challengeTypes: map['challengeTypes'] != null
+          ? List<String>.from(map['challengeTypes'])
+          : null,
     );
   }
 
@@ -29,6 +34,7 @@ class MascotState {
       'maxDaysInactive': maxDaysInactive,
       'message': message,
       'image': image,
+      'challengeTypes': challengeTypes,
     };
   }
 
@@ -38,6 +44,7 @@ class MascotState {
     int? maxDaysInactive,
     String? message,
     String? image,
+    List<String>? challengeTypes,
   }) {
     return MascotState(
       id: id ?? this.id,
@@ -45,6 +52,7 @@ class MascotState {
       maxDaysInactive: maxDaysInactive ?? this.maxDaysInactive,
       message: message ?? this.message,
       image: image ?? this.image,
+      challengeTypes: challengeTypes ?? this.challengeTypes,
     );
   }
 }

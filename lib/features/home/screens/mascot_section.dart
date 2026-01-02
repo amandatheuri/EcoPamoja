@@ -19,6 +19,7 @@ class MascotSection extends ConsumerWidget {
     final lastActive = user.lastActive;
     final daysInactive = now.difference(lastActive).inDays;
 
+    // Stream for all mascot states
     final mascotStatesStream = FirebaseFirestore.instance
         .collection('mascotStates')
         .orderBy('minDaysInactive')
@@ -35,10 +36,24 @@ class MascotSection extends ConsumerWidget {
             .map((doc) => doc.data() as Map<String, dynamic>)
             .toList();
 
+        // Filter mascot state based on inactivity and last challenge type
         final mascot = mascotStates.firstWhere(
-          (state) =>
-              daysInactive >= (state['minDaysInactive'] ?? 0) &&
-              daysInactive <= (state['maxDaysInactive'] ?? 999),
+          (state) {
+            final minDays = state['minDaysInactive'] ?? 0;
+            final maxDays = state['maxDaysInactive'] ?? 999;
+final List<String>? types =
+    (state['challengeTypes'] as List<dynamic>?)
+        ?.map((e) => e.toString())
+        .toList();
+
+final bool typeMatches =
+    types == null ||
+    user.lastChallengeType.any((t) => types.contains(t));
+
+            return daysInactive >= minDays &&
+                daysInactive <= maxDays &&
+                typeMatches;
+          },
           orElse: () => <String, dynamic>{},
         );
 
@@ -57,88 +72,78 @@ class MascotSection extends ConsumerWidget {
     );
   }
 
- Widget _ecoMascotCard(
-  BuildContext context, {
-  required Widget mascot,
-  required int streak,
-  required String message,
-}) {
-  return Container(
-    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-    decoration: BoxDecoration(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Stack mascot and streak
-        Stack(
-          alignment: Alignment.topRight,
-          children: [
-            // Mascot image
-            Center(child: mascot),
-
-            // Positioned streak badge
-            Positioned(
-              right: 16,
-              top: 30,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.complimentary, width: 1),
-                  boxShadow: [
-                    BoxShadow(
-                      // ignore: deprecated_member_use
-                      color: Colors.black.withOpacity(0.15),
-                      blurRadius: 4,
-                      offset: const Offset(1, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.local_fire_department,
-                      color: AppColors.complimentary,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      "$streak",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.complimentary,
-                          ),
-                    ),
-                  ],
+  Widget _ecoMascotCard(
+    BuildContext context, {
+    required Widget mascot,
+    required int streak,
+    required String message,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Stack(
+            alignment: Alignment.topRight,
+            children: [
+              Center(child: mascot),
+              Positioned(
+                right: 16,
+                top: 30,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.complimentary, width: 1),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius: 4,
+                        offset: const Offset(1, 2),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.local_fire_department,
+                        color: AppColors.complimentary,
+                        size: 16,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        "$streak",
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.complimentary,
+                            ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 16),
-
-        // Firestore message
-        Text(
-          message,
-          textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall
-              ?.copyWith(fontWeight: FontWeight.bold),
-        ),
-      ],
-    ),
-  );
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall
+                ?.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
 }
-
-}
-
 
 class BobbingMascotImage extends StatefulWidget {
   final String imageUrl;
@@ -161,10 +166,8 @@ class _BobbingMascotImageState extends State<BobbingMascotImage>
       duration: const Duration(seconds: 3),
     )..repeat(reverse: true);
 
-    animation = Tween<double>(
-      begin: -10,
-      end: 10,
-    ).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOut));
+    animation = Tween<double>(begin: -10, end: 10)
+        .animate(CurvedAnimation(parent: controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -184,10 +187,7 @@ class _BobbingMascotImageState extends State<BobbingMascotImage>
         );
       },
       child: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-         
-        ),
+        decoration: const BoxDecoration(shape: BoxShape.circle),
         child: Image.network(widget.imageUrl, height: 150, fit: BoxFit.contain),
       ),
     );

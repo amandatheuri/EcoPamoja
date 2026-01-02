@@ -26,9 +26,8 @@ class HomePage extends ConsumerWidget {
 
             // User progress
             ProgressSection(
-              quizzesCompleted: user?.quizzesCompleted ?? 0,
-              actionsCompleted: user?.dailyHabitsCompleted ?? 0,
-              trophiesEarned: user?.badgesEarned.length ?? 0,
+              trophiesEarned: user?.badgesEarned.length ?? 0, 
+              totalChallengesCompleted: user?.totalChallengesCompleted?? 0,
             ),
 
             const SizedBox(height: 20),

@@ -24,14 +24,15 @@ Widget glowingProfileCircle(BuildContext context, String? imageUrl) {
       child: CircleAvatar(
         radius: 20,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : null,
-        child: imageUrl == null
-            ? Icon(
-                Icons.person_2_outlined,
-                color: Theme.of(context).primaryColor,
-                size: 20,
-              )
-            : null,
+backgroundImage: imageUrl!.isNotEmpty ? NetworkImage(imageUrl) : null,
+child: imageUrl.isEmpty
+    ? Icon(
+        Icons.person_2_outlined,
+        color: Theme.of(context).primaryColor,
+        size: 20,
+      )
+    : null,
+
       ),
     ),
   );

@@ -5,24 +5,32 @@ class UserData {
   final String email;
   final String username;
   final String? photoUrl;
+
   final DateTime createdAt;
   final DateTime lastActive;
+  final DateTime lastReset;
+
   final int streak;
   final bool isAdmin;
+
   final int quizzesCompleted;
   final int dailyHabitsCompleted;
   final int wasteReductionCompleted;
   final int totalChallengesCompleted;
   final int todayChallengesCompleted;
+
   final int dailyGoal;
   final bool notificationsEnabled;
-  final List<String> completedSponsored;
-  final String themeMode;
-  final bool hasSeenIntro;
+
   final int groupsJoined;
   final int pointsEarned;
+
+  final String themeMode;
+  final bool hasSeenIntro;
+
   final List<String> badgesEarned;
-  final DateTime lastReset; 
+  final List<String> completedSponsored;
+  final List<String> lastChallengeType;
 
   UserData({
     required this.uid,
@@ -31,9 +39,9 @@ class UserData {
     this.photoUrl,
     required this.createdAt,
     required this.lastActive,
+    required this.lastReset,
     required this.streak,
     required this.isAdmin,
-    required this.badgesEarned,
     required this.quizzesCompleted,
     required this.dailyHabitsCompleted,
     required this.wasteReductionCompleted,
@@ -41,13 +49,13 @@ class UserData {
     required this.todayChallengesCompleted,
     required this.dailyGoal,
     required this.notificationsEnabled,
-    //required this.preferredCategories,
-    required this.themeMode,
-    required this.hasSeenIntro,
     required this.groupsJoined,
     required this.pointsEarned,
-    required this.lastReset,
-    required this.completedSponsored
+    required this.themeMode,
+    required this.hasSeenIntro,
+    required this.badgesEarned,
+    required this.completedSponsored,
+    required this.lastChallengeType,
   });
 
   factory UserData.fromDocument(DocumentSnapshot doc) {
@@ -60,22 +68,23 @@ class UserData {
       photoUrl: data['photoUrl'],
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       lastActive: (data['lastActive'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      lastReset: (data['lastReset'] as Timestamp?)?.toDate()?? DateTime.now(),
+      lastReset: (data['lastReset'] as Timestamp?)?.toDate() ?? DateTime.now(),
       streak: data['streak'] ?? 0,
       isAdmin: data['isAdmin'] ?? false,
       quizzesCompleted: data['quizzesCompleted'] ?? 0,
-      dailyHabitsCompleted: data['actionsCompleted'] ?? 0,
+      dailyHabitsCompleted: data['dailyHabitsCompleted'] ?? 0,
+      wasteReductionCompleted: data['wasteReductionCompleted'] ?? 0,
       totalChallengesCompleted: data['totalChallengesCompleted'] ?? 0,
-      dailyGoal: data['dailyGoal'] ?? 3,
       todayChallengesCompleted: data['todayChallengesCompleted'] ?? 0,
+      dailyGoal: data['dailyGoal'] ?? 3,
       notificationsEnabled: data['notificationsEnabled'] ?? true,
-      badgesEarned: List<String>.from(data['badgesEarned'] ?? []),
-      completedSponsored: List<String>.from(data['completedSponsored'] ?? []),
+      groupsJoined: data['groupsJoined'] ?? 0,
+      pointsEarned: data['pointsEarned'] ?? 0,
       themeMode: data['themeMode'] ?? 'dark',
       hasSeenIntro: data['hasSeenIntro'] ?? false,
-      groupsJoined: data['groupsJoined']?? 0,
-      pointsEarned: data['pointsEarned']?? 0,
-      wasteReductionCompleted: data['wasteReductionCompleted']?? 0,
+      badgesEarned: List<String>.from(data['badgesEarned'] ?? []),
+      completedSponsored: List<String>.from(data['completedSponsored'] ?? []),
+      lastChallengeType: List<String>.from(data['lastChallengeType'] ?? []),
     );
   }
 
@@ -86,23 +95,23 @@ class UserData {
       'photoUrl': photoUrl,
       'createdAt': Timestamp.fromDate(createdAt),
       'lastActive': Timestamp.fromDate(lastActive),
+      'lastReset': Timestamp.fromDate(lastReset),
       'streak': streak,
       'isAdmin': isAdmin,
-      'badgesEarned': badgesEarned,
       'quizzesCompleted': quizzesCompleted,
       'dailyHabitsCompleted': dailyHabitsCompleted,
+      'wasteReductionCompleted': wasteReductionCompleted,
       'totalChallengesCompleted': totalChallengesCompleted,
       'todayChallengesCompleted': todayChallengesCompleted,
       'dailyGoal': dailyGoal,
-      'wasteReductionCompleted': wasteReductionCompleted,
       'notificationsEnabled': notificationsEnabled,
-      //'preferredCategories': preferredCategories,
+      'groupsJoined': groupsJoined,
+      'pointsEarned': pointsEarned,
       'themeMode': themeMode,
       'hasSeenIntro': hasSeenIntro,
-      'pointsEarned': pointsEarned,
-      'groupsJoined': groupsJoined,
-      'lastReset':lastReset,
+      'badgesEarned': badgesEarned,
       'completedSponsored': completedSponsored,
+      'lastChallengeType': lastChallengeType,
     };
   }
 }

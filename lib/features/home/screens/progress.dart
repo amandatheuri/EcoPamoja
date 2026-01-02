@@ -3,24 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class ProgressSection extends StatelessWidget {
-  final int quizzesCompleted;
-  final int actionsCompleted;
+  final int totalChallengesCompleted; // <-- updated field
   final int trophiesEarned;
 
   const ProgressSection({
     super.key,
-    required this.quizzesCompleted,
-    required this.actionsCompleted,
+    required this.totalChallengesCompleted,
     required this.trophiesEarned,
   });
 
   @override
   Widget build(BuildContext context) {
-    final int ongoingChallenges = quizzesCompleted + actionsCompleted;
     final int totalChallengesForBadge = 15;
     final int remainingForBadge =
-        (totalChallengesForBadge - ongoingChallenges).clamp(0, totalChallengesForBadge);
-    final double progress = (ongoingChallenges / totalChallengesForBadge).clamp(0.0, 1.0);
+        (totalChallengesForBadge - totalChallengesCompleted).clamp(0, totalChallengesForBadge);
+    final double progress = (totalChallengesCompleted / totalChallengesForBadge).clamp(0.0, 1.0);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -53,7 +50,7 @@ class ProgressSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "$ongoingChallenges ongoing challenges",
+                        "$totalChallengesCompleted total completed challenges",
                         style: Theme.of(context).textTheme.labelMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),

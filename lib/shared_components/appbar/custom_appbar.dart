@@ -20,7 +20,7 @@ class CustomEcoAppBar extends ConsumerWidget implements PreferredSizeWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Glowing Profile Button
-          glowingProfileCircle(context, user?.photoUrl),
+          glowingProfileCircle(context, user?.photoUrl ?? ''),
           const SizedBox(width: 12),
 
           // Greeting + Username

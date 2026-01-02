@@ -50,6 +50,7 @@ Future<bool> _openLinkAndAwardPoints(
   }
 
   final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+
   final userSnap = await userRef.get();
   final completedList =
       List<String>.from(userSnap.data()?['completedSponsored'] ?? []);
@@ -61,31 +62,7 @@ Future<bool> _openLinkAndAwardPoints(
     return false;
   }
 
-  final Uri uri = Uri.parse(url.startsWith('http') ? url : 'https://$url');
-  try {
-    final opened = await launchUrl(uri, mode: LaunchMode.inAppBrowserView);
-    if (!opened) {
-      await launchUrl(uri, mode: LaunchMode.platformDefault);
-    }
-  } catch (e) {
-    debugPrint('Error launching link: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Could not open link')),
-    );
-    return false;
-  }
-final query = await FirebaseFirestore.instance
-    .collection('sponsored_challenges')
-    .doc(challengeId) 
-    .get();
-
-if (!query.exists) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(content: Text('Challenge not found')),
-  );
-  return false;
-}
-
+  // Award points FIRST 
   try {
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       final snapshot = await transaction.get(userRef);
@@ -102,12 +79,11 @@ if (!query.exists) {
       });
     });
 
-    await updateUserStreak(userRef.id);
+    await updateUserStreak(user.uid);
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('You earned $pointsToAward points!')),
+      SnackBar(content: Text('+$pointsToAward points unlocked 🎉')),
     );
-    return true;
   } catch (e) {
     debugPrint('Error updating points: $e');
     ScaffoldMessenger.of(context).showSnackBar(
@@ -115,7 +91,17 @@ if (!query.exists) {
     );
     return false;
   }
+
+  // THEN open link
+  final Uri uri = Uri.parse(url.startsWith('http') ? url : 'https://$url');
+
+  Future.microtask(() {
+    launchUrl(uri, mode: LaunchMode.platformDefault);
+  });
+
+  return true;
 }
+
 
   @override
   Widget build(BuildContext context) {

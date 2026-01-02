@@ -56,5 +56,5 @@ static SponsoredChallengesModel fromFirestore(Map<String, dynamic> doc, {String 
     createdAt: (doc['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     pointsToAward: doc['pointsEarned']?? 0,
   );
-}
-}
+
+}}

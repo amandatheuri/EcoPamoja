@@ -21,6 +21,7 @@ import 'package:ecopamoja/features/eco_challenges/screens/sponsored.dart';
 import 'package:ecopamoja/shared_components/appbar/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class UserChallenges extends ConsumerWidget {
   const UserChallenges({super.key});
@@ -85,7 +86,9 @@ class UserChallenges extends ConsumerWidget {
             title: 'Daily Habits', 
             total: 3, 
             icon: Icons.eco,
-            onContinue: (){}, 
+            onContinue: (){
+              context.push('/daily-habits');
+            }, 
             progressKey: 'habits'
             ),
             const SizedBox(height: 15),
